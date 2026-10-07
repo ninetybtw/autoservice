@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0a0a0a"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="#ff3b30" stroke-width="10"/>
+  <path d="M120 300 C170 230 220 200 300 196 C340 194 370 210 392 232" stroke="#ff3b30" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <text x="256" y="372" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="6" text-anchor="middle" fill="#fff">GLOSS</text>
+</svg>

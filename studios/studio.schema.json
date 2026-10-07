@@ -1,0 +1,529 @@
+{
+  "title": "Настройки автостудии",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 60
+    },
+    "tagline": {
+      "default": "",
+      "type": "string",
+      "maxLength": 120
+    },
+    "description": {
+      "default": "",
+      "type": "string",
+      "maxLength": 800
+    },
+    "timezone": {
+      "default": "Europe/Moscow",
+      "type": "string",
+      "minLength": 3
+    },
+    "contacts": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 30
+        },
+        "address": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "howToFind": {
+          "default": "",
+          "type": "string",
+          "maxLength": 500
+        },
+        "mapUrl": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "string",
+              "const": ""
+            }
+          ]
+        },
+        "telegram": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "whatsapp": {
+          "type": "string",
+          "maxLength": 30
+        }
+      },
+      "required": [
+        "phone",
+        "address"
+      ]
+    },
+    "branding": {
+      "type": "object",
+      "properties": {
+        "logo": {
+          "default": "",
+          "type": "string"
+        },
+        "hero": {
+          "default": "",
+          "type": "string"
+        },
+        "icon192": {
+          "type": "string"
+        },
+        "icon512": {
+          "type": "string"
+        }
+      }
+    },
+    "infoCards": {
+      "minItems": 3,
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "default": "star",
+            "type": "string",
+            "enum": [
+              "shield",
+              "clock",
+              "sparkle",
+              "drop",
+              "car",
+              "medal",
+              "wrench",
+              "coffee",
+              "camera",
+              "star"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "text": {
+            "default": "",
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "title"
+        ]
+      }
+    },
+    "services": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "description": {
+            "default": "",
+            "type": "string",
+            "maxLength": 400
+          },
+          "price": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000000
+          },
+          "priceFrom": {
+            "default": false,
+            "type": "boolean"
+          },
+          "durationMinutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 10080
+          },
+          "keywords": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          "active": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "price",
+          "durationMinutes"
+        ]
+      }
+    },
+    "works": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "image": {
+            "type": "string",
+            "minLength": 1
+          },
+          "caption": {
+            "default": "",
+            "type": "string",
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "id",
+          "image"
+        ]
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "properties": {
+        "weekly": {
+          "type": "object",
+          "properties": {
+            "mon": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "tue": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "wed": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "thu": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fri": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sat": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sun": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    },
+                    "close": {
+                      "type": "string",
+                      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                    }
+                  },
+                  "required": [
+                    "open",
+                    "close"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri",
+            "sat",
+            "sun"
+          ]
+        },
+        "exceptions": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "hours": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "open": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                      },
+                      "close": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$|^24:00$"
+                      }
+                    },
+                    "required": [
+                      "open",
+                      "close"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 120
+              }
+            },
+            "required": [
+              "date",
+              "hours"
+            ]
+          }
+        }
+      },
+      "required": [
+        "weekly"
+      ]
+    },
+    "booking": {
+      "type": "object",
+      "properties": {
+        "bays": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "slotStepMinutes": {
+          "default": 30,
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 240
+        },
+        "bufferMinutes": {
+          "default": 30,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 240
+        },
+        "minLeadMinutes": {
+          "default": 120,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10080
+        },
+        "horizonDays": {
+          "default": 30,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "cancelMinHoursBefore": {
+          "default": 24,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 336
+        },
+        "cancellationPolicy": {
+          "default": "",
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "bays"
+      ]
+    },
+    "$schema": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40,
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "pattern": "^(?:[A-Za-z0-9_'+\\-]+\\.)*[A-Za-z0-9_'+\\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "contacts",
+    "branding",
+    "infoCards",
+    "services",
+    "schedule",
+    "booking",
+    "slug",
+    "owner"
+  ]
+}

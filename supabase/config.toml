@@ -1,0 +1,39 @@
+# Настройки Supabase CLI для локального запуска и деплоя функций.
+project_id = "autoservice"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+major_version = 17
+
+[storage]
+enabled = true
+file_size_limit = "10MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+# Владельцев создаёт скрипт studio:push — самостоятельная регистрация не нужна
+enable_signup = false
+
+[auth.email]
+enable_signup = false
+enable_confirmations = false
+
+# Функции проверяют доступ сами: клиент записывается без входа,
+# владелец передаёт свой токен, расписание — секрет CRON_SECRET.
+[functions.booking]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.assistant]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.send-reminders]
+verify_jwt = false
+import_map = "./functions/import_map.json"

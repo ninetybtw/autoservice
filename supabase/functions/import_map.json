@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "zod": "npm:zod@^4.1.0",
+    "date-fns": "npm:date-fns@^4.1.0",
+    "date-fns/locale": "npm:date-fns@^4.1.0/locale",
+    "date-fns-tz": "npm:date-fns-tz@^3.2.0",
+    "openai": "npm:openai@^7.0.0",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.100.0",
+    "web-push": "npm:web-push@^3.6.7"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "../studio.schema.json",
+  "slug": "gloss-lab",
+  "owner": { "email": "hello@glosslab.ru" },
+  "name": "Gloss Lab",
+  "tagline": "Мойка и полировка в Екатеринбурге",
+  "description": "Небольшая студия с одним боксом: никакой спешки, каждую машину ведёт один мастер от начала до конца.",
+  "timezone": "Asia/Yekaterinburg",
+  "contacts": {
+    "phone": "+7 912 000-11-22",
+    "address": "Екатеринбург, ул. Малышева, 120",
+    "howToFind": "Заезд со двора, второй бокс слева. Ориентир — красная неоновая надпись GLOSS.",
+    "mapUrl": "https://yandex.ru/maps/?text=Екатеринбург, ул. Малышева, 120"
+  },
+  "branding": { "logo": "logo.svg", "hero": "hero.jpg", "icon192": "icon-192.png", "icon512": "icon-512.png" },
+  "infoCards": [
+    { "icon": "medal", "title": "Один мастер", "text": "Машину ведёт один человек — он отвечает за результат." },
+    { "icon": "drop", "title": "Мягкая химия", "text": "Безопасные для покрытия составы, никакой абразивной мойки." },
+    { "icon": "camera", "title": "Фотоотчёт", "text": "Присылаем фото «до» и «после» в мессенджер." }
+  ],
+  "services": [
+    { "id": "wash", "name": "Детейлинг-мойка", "description": "Ручная мойка в три фазы и сушка без разводов.", "price": 3000, "priceFrom": false, "durationMinutes": 120, "keywords": ["мойка"], "active": true },
+    { "id": "polish", "name": "Полировка кузова", "description": "Двухэтапная полировка и защитный воск.", "price": 18000, "priceFrom": true, "durationMinutes": 420, "keywords": [], "active": true },
+    { "id": "ceramic", "name": "Керамика", "description": "Полировка и керамическое покрытие, 2 рабочих дня.", "price": 30000, "priceFrom": true, "durationMinutes": 840, "keywords": ["керамическое покрытие"], "active": true }
+  ],
+  "works": [
+    { "id": "w1", "image": "work-1.jpg", "caption": "Полировка белого седана" },
+    { "id": "w2", "image": "work-2.jpg", "caption": "Керамика на красном кузове" },
+    { "id": "w3", "image": "work-3.jpg", "caption": "Детейлинг-мойка" }
+  ],
+  "schedule": {
+    "weekly": {
+      "mon": null,
+      "tue": { "open": "09:00", "close": "18:00" },
+      "wed": { "open": "09:00", "close": "18:00" },
+      "thu": { "open": "09:00", "close": "18:00" },
+      "fri": { "open": "09:00", "close": "18:00" },
+      "sat": { "open": "10:00", "close": "16:00" },
+      "sun": null
+    },
+    "exceptions": []
+  },
+  "booking": {
+    "bays": 1,
+    "slotStepMinutes": 60,
+    "bufferMinutes": 30,
+    "minLeadMinutes": 180,
+    "horizonDays": 21,
+    "cancelMinHoursBefore": 12,
+    "cancellationPolicy": ""
+  }
+}
