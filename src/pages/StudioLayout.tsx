@@ -16,12 +16,12 @@ export function StudioLayout() {
   if (isPending) {
     return (
       <div style={{ minHeight: '100svh', display: 'grid', placeItems: 'center' }}>
-        <Spinner size="lg" label="Загружаем студию" />
+        <Spinner size="lg" label="Загружаем автосервис" />
       </div>
     );
   }
   if (isError && !studio) {
-    return <NotFound title="Не удалось загрузить студию" text="Проверьте подключение к интернету и попробуйте ещё раз." onRetry={() => refetch()} />;
+    return <NotFound title="Не удалось загрузить страницу автосервиса" text="Проверьте подключение к интернету и попробуйте ещё раз." onRetry={() => refetch()} />;
   }
   if (!studio) return <NotFound />;
   return (

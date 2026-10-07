@@ -60,8 +60,8 @@ export function createSupabaseBackend(): Backend {
       if (!data) return null;
       const parsed = studioSettingsSchema.safeParse(data.settings);
       if (!parsed.success) {
-        console.error('Ошибка в настройках студии', parsed.error.issues);
-        throw new UserError('Настройки студии повреждены');
+        console.error('Ошибка в настройках автосервиса', parsed.error.issues);
+        throw new UserError('Настройки автосервиса повреждены');
       }
       return { id: data.id, slug: data.slug, settings: parsed.data };
     },
@@ -81,7 +81,7 @@ export function createSupabaseBackend(): Backend {
       if (error) throw new UserError(error.message === 'Invalid login credentials' ? 'Неверная почта или пароль' : error.message);
       if (!(await this.currentOwner(studio))) {
         await db.auth.signOut();
-        throw new UserError('Эта учётная запись не привязана к студии');
+        throw new UserError('Эта учётная запись не привязана к этому автосервису');
       }
     },
 

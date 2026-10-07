@@ -1,0 +1,53 @@
+{
+  "$schema": "../studio.schema.json",
+  "slug": "garage-77",
+  "owner": { "email": "hello@garage77.ru" },
+  "name": "Гараж 77",
+  "tagline": "Автосервис в Екатеринбурге",
+  "description": "Небольшой сервис с одним подъёмником: машину ведёт один мастер от приёмки до выдачи.",
+  "timezone": "Asia/Yekaterinburg",
+  "contacts": {
+    "phone": "+7 912 000-11-22",
+    "address": "Екатеринбург, ул. Монтёров, 7",
+    "howToFind": "Заезд со двора, второй бокс слева. Ориентир — красная вывеска «Гараж 77».",
+    "mapUrl": "https://yandex.ru/maps/?text=Екатеринбург, ул. Монтёров, 7"
+  },
+  "branding": { "logo": "logo.svg", "hero": "hero.jpg", "icon192": "icon-192.png", "icon512": "icon-512.png" },
+  "infoCards": [
+    { "icon": "medal", "title": "Один мастер", "text": "Машину ведёт один человек — он отвечает за результат." },
+    { "icon": "wrench", "title": "Свои запчасти — можно", "text": "Поставим ваши детали или подберём оригинал и аналоги." },
+    { "icon": "clock", "title": "Точно в срок", "text": "Называем время готовности сразу при записи." }
+  ],
+  "services": [
+    { "id": "maintenance", "name": "ТО и замена масла", "description": "Масло, фильтры и осмотр автомобиля на подъёмнике.", "price": 2500, "priceFrom": true, "durationMinutes": 60, "keywords": ["то", "масло"], "active": true },
+    { "id": "diagnostics", "name": "Диагностика ходовой", "description": "Осмотр подвески и рулевого управления на подъёмнике.", "price": 800, "priceFrom": false, "durationMinutes": 60, "keywords": ["диагностика", "ходовая", "подвеска"], "active": true },
+    { "id": "tires", "name": "Шиномонтаж", "description": "Сезонная замена 4 колёс с балансировкой.", "price": 2400, "priceFrom": false, "durationMinutes": 60, "keywords": ["шины", "колёса", "резина", "переобуться"], "active": true },
+    { "id": "engine", "name": "Ремонт двигателя", "description": "Замена ГРМ, прокладок, ремонт навесного. Обычно 2 рабочих дня.", "price": 15000, "priceFrom": true, "durationMinutes": 900, "keywords": ["двигатель", "мотор", "грм"], "active": true }
+  ],
+  "works": [
+    { "id": "w1", "image": "work-1.jpg", "caption": "ТО и замена масла" },
+    { "id": "w2", "image": "work-2.jpg", "caption": "Ремонт двигателя: замена ГРМ" },
+    { "id": "w3", "image": "work-3.jpg", "caption": "Сезонный шиномонтаж" }
+  ],
+  "schedule": {
+    "weekly": {
+      "mon": null,
+      "tue": { "open": "09:00", "close": "18:00" },
+      "wed": { "open": "09:00", "close": "18:00" },
+      "thu": { "open": "09:00", "close": "18:00" },
+      "fri": { "open": "09:00", "close": "18:00" },
+      "sat": { "open": "10:00", "close": "16:00" },
+      "sun": null
+    },
+    "exceptions": []
+  },
+  "booking": {
+    "bays": 1,
+    "slotStepMinutes": 60,
+    "bufferMinutes": 15,
+    "minLeadMinutes": 180,
+    "horizonDays": 21,
+    "cancelMinHoursBefore": 12,
+    "cancellationPolicy": ""
+  }
+}

@@ -9,7 +9,7 @@ import sharp from 'sharp';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const [slug = 'noir-detailing', accent = '#ff1f2d', logoText = 'NOIR'] = process.argv.slice(2);
+const [slug = 'motor-service', accent = '#ff1f2d', logoText = 'MOTOR'] = process.argv.slice(2);
 const dir = join('studios', slug);
 mkdirSync(dir, { recursive: true });
 
@@ -66,7 +66,7 @@ function car({ paint = '#141518', paint2 = '#050506', rim = accent, light = '#ff
     </defs>`;
 }
 
-function scene({ paint, paint2, transform = '', glowColor = accent, bg = '#050505' }) {
+function scene({ paint, paint2, transform = '', glowColor = accent, bg = '#050505', lift = true }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
   <defs>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -92,6 +92,14 @@ function scene({ paint, paint2, transform = '', glowColor = accent, bg = '#05050
   ${Array.from({ length: 9 }, (_, i) => `<rect x="${i * 180 + 40}" y="0" width="2" height="780" fill="#fff" opacity="0.035"/>`).join('')}
   <rect x="300" y="70" width="1000" height="10" rx="5" fill="#fff" opacity="0.9" filter="url(#blur8)"/>
   <rect x="340" y="72" width="920" height="5" rx="3" fill="#fff"/>
+  ${lift ? `
+  <g opacity="0.95">
+    <rect x="150" y="170" width="46" height="620" rx="6" fill="#1b1c20" stroke="#2c2d33" stroke-width="3"/>
+    <rect x="1404" y="170" width="46" height="620" rx="6" fill="#1b1c20" stroke="#2c2d33" stroke-width="3"/>
+    ${Array.from({ length: 9 }, (_, i) => `<rect x="150" y="${200 + i * 64}" width="46" height="12" fill="${accent}" opacity="0.55"/><rect x="1404" y="${200 + i * 64}" width="46" height="12" fill="${accent}" opacity="0.55"/>`).join('')}
+    <rect x="196" y="770" width="300" height="14" rx="5" fill="#2a2b30"/>
+    <rect x="1104" y="770" width="300" height="14" rx="5" fill="#2a2b30"/>
+  </g>` : ''}
   <rect y="790" width="1600" height="210" fill="url(#floor)"/>
   <ellipse cx="820" cy="800" rx="640" ry="40" fill="#000" filter="url(#blur40)" opacity="0.9"/>
   <g transform="${transform}">
@@ -105,9 +113,9 @@ function scene({ paint, paint2, transform = '', glowColor = accent, bg = '#05050
 const images = {
   'hero.jpg': scene({ paint: '#17181c', paint2: '#040405' }),
   'work-1.jpg': scene({ paint: '#e9e9ec', paint2: '#8d8f96', glowColor: '#ffffff', transform: 'translate(-80 -40) scale(1.08)' }),
-  'work-2.jpg': scene({ paint: '#b3121c', paint2: '#3d0408', transform: 'translate(-900 -560) scale(2.2)' }),
+  'work-2.jpg': scene({ paint: '#b3121c', paint2: '#3d0408', transform: 'translate(-900 -560) scale(2.2)', lift: false }),
   'work-3.jpg': scene({ paint: '#1b2a44', paint2: '#070b14', glowColor: '#4c8dff', transform: 'translate(-60 0)' }),
-  'work-4.jpg': scene({ paint: '#2b2c30', paint2: '#0a0a0b', transform: 'translate(-1500 -380) scale(2.1)' }),
+  'work-4.jpg': scene({ paint: '#2b2c30', paint2: '#0a0a0b', transform: 'translate(-1500 -380) scale(2.1)', lift: false }),
 };
 
 for (const [name, svg] of Object.entries(images)) {
@@ -122,7 +130,10 @@ for (const [name, svg] of Object.entries(images)) {
 const logo = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#0a0a0a"/>
   <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="${accent}" stroke-width="10"/>
-  <path d="M120 300 C170 230 220 200 300 196 C340 194 370 210 392 232" stroke="${accent}" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <g transform="translate(256 190) rotate(-45)">
+    <rect x="-14" y="-10" width="28" height="150" rx="14" fill="${accent}" transform="translate(0 -40)"/>
+    <path d="M-46 -70 a46 46 0 1 0 92 0 l-22 0 l0 22 l-48 0 l0 -22 z" fill="${accent}" transform="translate(0 -40)"/>
+  </g>
   <text x="256" y="372" font-family="Arial, Helvetica, sans-serif" font-size="${logoText.length > 5 ? 74 : 96}" font-weight="800" letter-spacing="6" text-anchor="middle" fill="#fff">${logoText}</text>
 </svg>`;
 writeFileSync(join(dir, 'logo.svg'), logo);

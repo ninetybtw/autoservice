@@ -24,7 +24,7 @@ function stemsMatch(a: string, b: string): boolean {
 const STOP = new Set(['для', 'и', 'с', 'на', 'в', 'по', 'от', 'до', 'или', 'услуга', 'авто', 'автомобиля', 'машины']);
 
 function serviceStems(s: Pick<Service, 'name' | 'keywords'>): string[] {
-  return [...words(s.name), ...s.keywords.flatMap(words)].filter((w) => !STOP.has(w) && w.length >= 3).map(stem);
+  return [...new Set([...words(s.name), ...s.keywords.flatMap(words)].filter((w) => !STOP.has(w) && w.length >= 2).map(stem))];
 }
 
 export function hasStem(text: string, needles: string[]): boolean {

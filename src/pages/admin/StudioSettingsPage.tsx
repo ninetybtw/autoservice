@@ -100,8 +100,8 @@ export default function StudioSettingsPage() {
   return (
     <main className="page page-narrow stack">
       <SettingsSection title="Основное" description="Название и описание на главной странице.">
-        <TextInput label="Название студии" value={draft.name} onChange={(v) => patch('name', v)} />
-        <TextInput label="Короткая строка над названием" value={draft.tagline} onChange={(v) => patch('tagline', v)} placeholder="Детейлинг-студия полного цикла" />
+        <TextInput label="Название автосервиса" value={draft.name} onChange={(v) => patch('name', v)} />
+        <TextInput label="Короткая строка над названием" value={draft.tagline} onChange={(v) => patch('tagline', v)} placeholder="Автосервис полного цикла" />
         <TextArea label="Описание" value={draft.description} onChange={(v) => patch('description', v)} rows={4} description="Первое предложение показывается на главном фото." />
       </SettingsSection>
 
@@ -114,7 +114,7 @@ export default function StudioSettingsPage() {
         <FileButton label="Заменить главное фото" onFile={(f) => uploadBranding('hero', f)} testId="hero-file" />
       </SettingsSection>
 
-      <SettingsSection title="Контакты" description="Адрес, телефон и подсказка, как найти студию.">
+      <SettingsSection title="Контакты" description="Адрес, телефон и подсказка, как найти сервис.">
         <TextInput label="Телефон" value={draft.contacts.phone} onChange={contact('phone')} />
         <TextInput label="Адрес" value={draft.contacts.address} onChange={contact('address')} />
         <TextArea label="Как найти" value={draft.contacts.howToFind} onChange={contact('howToFind')} rows={3} placeholder="Въезд со двора, ворота с красной подсветкой" />
@@ -205,7 +205,7 @@ export default function StudioSettingsPage() {
         <TextArea label="Правила отмены для клиента" isOptional value={b.cancellationPolicy} onChange={(v) => patch('booking', { ...b, cancellationPolicy: v })} rows={2} />
       </SettingsSection>
 
-      <SettingsSection title="Карточки на главной" description="Три коротких преимущества студии.">
+      <SettingsSection title="Карточки на главной" description="Три коротких преимущества сервиса.">
         {draft.infoCards.map((c, i) => (
           <div key={i} className="card form-grid" style={{ background: 'var(--surface)' }}>
             <strong>Карточка {i + 1}</strong>

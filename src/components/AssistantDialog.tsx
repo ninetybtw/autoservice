@@ -2,7 +2,7 @@ import { Dialog, DialogHeader } from '@astryxdesign/core/Dialog';
 import { AssistantChat } from './AssistantChat.tsx';
 import { useStudio } from '../studio.tsx';
 
-export const CLIENT_EXAMPLES = ['Когда ближайшее окно?', 'Сколько стоит полировка?', 'Как найти студию?'];
+export const CLIENT_EXAMPLES = ['Когда ближайшее окно?', 'Сколько стоит замена масла?', 'Как вас найти?'];
 
 export function AssistantDialog({ open, onClose, initial }: { open: boolean; onClose: () => void; initial: string | null }) {
   const { settings } = useStudio();

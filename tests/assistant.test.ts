@@ -6,7 +6,7 @@ import { zonedToInstant } from '../shared/slots.ts';
 import type { Booking, Payment } from '../shared/schema.ts';
 import { loadStudio } from './fixtures.ts';
 
-const settings = loadStudio('noir-detailing');
+const settings = loadStudio('motor-service');
 const tz = settings.timezone;
 const now = zonedToInstant('2026-10-07', '12:00', tz); // среда
 const ask = (ctx: AssistantContext, ...texts: string[]) =>
@@ -19,10 +19,11 @@ const client: AssistantContext = { mode: 'client', settings, now, busy: [] };
 
 describe('распознавание', () => {
   it('находит услуги по словоформам и просит уточнить при нескольких', () => {
-    expect(matchServices('сколько стоит керамику нанести', settings.services).map((s) => s.id)).toEqual(['ceramic']);
-    expect(matchServices('Сколько стоит полировка?', settings.services).map((s) => s.id)).toEqual(['polish-light', 'polish-restore', 'headlights']);
-    expect(matchServices('Ближайшее окно на «Восстановительная полировка»', settings.services).map((s) => s.id)).toEqual(['polish-restore']);
-    expect(matchServices('нужна химчистка', settings.services).map((s) => s.id)).toEqual(['interior']);
+    expect(matchServices('сколько стоит капремонт', settings.services).map((s) => s.id)).toEqual(['engine-overhaul']);
+    expect(matchServices('Сколько стоит замена масла?', settings.services).map((s) => s.id)).toEqual(['oil-engine', 'oil-gearbox']);
+    expect(matchServices('Ближайшее окно на «Замена масла в АКПП»', settings.services).map((s) => s.id)).toEqual(['oil-gearbox']);
+    expect(matchServices('нужна диагностика', settings.services).map((s) => s.id)).toEqual(['diagnostics']);
+    expect(matchServices('когда можно пройти ТО', settings.services).map((s) => s.id)).toEqual(['maintenance']);
   });
 
   it('понимает периоды', () => {
@@ -38,36 +39,37 @@ describe('распознавание', () => {
 
 describe('помощник клиента', () => {
   it('уточняет услугу, если вопрос о цене неоднозначен', () => {
-    const r = ask(client, 'Сколько стоит полировка?');
+    const r = ask(client, 'Сколько стоит замена масла?');
     expect(r.text).toMatch(/Уточните/);
-    expect(r.text).toMatch(/Лёгкая полировка — от 12\s000\s₽/);
-    expect(r.suggestions).toHaveLength(3);
+    expect(r.text).toMatch(/Замена масла в двигателе — от 1\s200\s₽/);
+    expect(r.text).toMatch(/Замена масла в АКПП — от 3\s500\s₽/);
+    expect(r.suggestions).toHaveLength(2);
   });
 
   it('спрашивает услугу для ближайшего окна, а затем отвечает с учётом контекста', () => {
     const r = ask(client, 'Когда ближайшее окно?');
     expect(r.text).toMatch(/Для какой услуги/);
-    const r2 = ask(client, 'Когда ближайшее окно?', 'химчистка');
+    const r2 = ask(client, 'Когда ближайшее окно?', 'диагностика');
     // сейчас среда 12:00, запас 2 часа — ближайшее 14:00 сегодня
-    expect(r2.text).toMatch(/Ближайшее окно на «Химчистка салона» — сегодня в 14:00/);
+    expect(r2.text).toMatch(/Ближайшее окно на «Компьютерная диагностика» — сегодня в 14:00/);
   });
 
   it('по чипу отвечает сразу', () => {
-    const r = ask(client, 'Ближайшее окно на «Керамическое покрытие»');
+    const r = ask(client, 'Ближайшее окно на «Капитальный ремонт двигателя»');
     expect(r.text).toMatch(/сегодня в 14:00/);
     expect(r.text).toMatch(/будет готова/);
   });
 
   it('объясняет, как найти студию', () => {
-    const r = ask(client, 'Как найти студию?');
+    const r = ask(client, 'Как вас найти?');
     expect(r.text).toContain(settings.contacts.address);
     expect(r.text).toContain('шлагбаум');
     expect(r.text).toContain(settings.contacts.phone);
   });
 
   it('свободное время в конкретный день', () => {
-    const r = ask(client, 'Есть время на мойку завтра?');
-    expect(r.text).toMatch(/четверг, 8 октября на «Комплексная мойка» свободно: 10:00, 10:30/);
+    const r = ask(client, 'Есть время на развал завтра?');
+    expect(r.text).toMatch(/четверг, 8 октября на «Развал-схождение» свободно: 09:00, 09:30/);
   });
 });
 

@@ -307,8 +307,13 @@ a {
   pointer-events: none;
 }
 
+.glass-button .glass-label {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Нажатие сжимает только надпись: стекло остаётся на месте и не сбивается */
 .glass-button:active .glass-label {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
 .glass-layer {
@@ -360,9 +365,16 @@ a {
   z-index: 2;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 40px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 40px rgba(0, 0, 0, 0.6);
   pointer-events: none;
+}
+
+/* Пока стекло не готово (или без WebGL) — такой же матовый тёмный фон */
+.bottom-nav .glass-layer {
+  background: rgba(16, 16, 20, 0.78);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
 }
 
 .bottom-nav ul {
@@ -391,13 +403,48 @@ a {
   text-decoration: none;
   font-size: 12.5px;
   font-weight: 700;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  transition: color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav a.active {
   color: #fff;
-  background: rgba(229, 18, 27, 0.78);
   text-shadow: none;
+}
+
+.bottom-nav li {
+  position: relative;
+  z-index: 1;
+}
+
+/* Подсветка активного раздела плавно переезжает между пунктами */
+.nav-indicator {
+  position: absolute;
+  z-index: 0;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: calc((100% - 12px - 8px) / 3);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ef2a33 0%, #c90f18 100%);
+  box-shadow: 0 6px 18px rgba(229, 18, 27, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateX(calc(var(--active, 0) * (100% + 4px)));
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+  will-change: transform;
+}
+
+.nav-indicator.hidden {
+  opacity: 0;
+}
+
+.bottom-nav a svg {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bottom-nav a:active svg {
+  transform: scale(0.88);
 }
 
 .nav-dot {
@@ -416,29 +463,111 @@ a {
 }
 
 /* ------------------------------------------------------------------ */
-/* Появление разделов при прокрутке                                     */
+/* Появление разделов при прокрутке: мягко и каскадом                  */
 /* ------------------------------------------------------------------ */
-.reveal {
+.reveal > * {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translate3d(0, 18px, 0);
   transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 70ms);
 }
 
-.reveal.is-visible {
+.reveal:not(.is-visible) > * {
+  will-change: opacity, transform;
+}
+
+.reveal > :nth-child(2) { --i: 1; }
+.reveal > :nth-child(3) { --i: 2; }
+.reveal > :nth-child(4) { --i: 3; }
+.reveal > :nth-child(n + 5) { --i: 4; }
+
+.reveal.is-visible > * {
   opacity: 1;
   transform: none;
+}
+
+/* Карточки внутри раздела появляются одна за другой */
+.reveal .info-grid > *,
+.reveal .service-list > *,
+.reveal .works > * {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(120ms + var(--j, 0) * 60ms);
+}
+
+.reveal:not(.is-visible) .info-grid > *,
+.reveal:not(.is-visible) .service-list > *,
+.reveal:not(.is-visible) .works > * {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+
+.reveal .info-grid > :nth-child(2),
+.reveal .service-list > :nth-child(2),
+.reveal .works > :nth-child(2) { --j: 1; }
+.reveal .info-grid > :nth-child(3),
+.reveal .service-list > :nth-child(3),
+.reveal .works > :nth-child(3) { --j: 2; }
+.reveal .service-list > :nth-child(4),
+.reveal .works > :nth-child(4) { --j: 3; }
+.reveal .service-list > :nth-child(n + 5),
+.reveal .works > :nth-child(n + 5) { --j: 4; }
+
+/* Плавное появление страницы при переходе */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.client-shell > main,
+.admin > main {
+  animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Новые шаги записи и сетка времени появляются мягко */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.step-title,
+.slots,
+.bubble,
+.success-hero {
+  animation: fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal,
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
+  .reveal > *,
+  .reveal .info-grid > *,
+  .reveal .service-list > *,
+  .reveal .works > *,
+  .reveal:not(.is-visible) .info-grid > *,
+  .reveal:not(.is-visible) .service-list > *,
+  .reveal:not(.is-visible) .works > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .nav-indicator {
     transition: none;
   }
   *,
@@ -739,6 +868,30 @@ a {
   font-weight: 600;
   cursor: pointer;
   text-align: left;
+}
+
+.chip,
+.choice,
+.day,
+.slot,
+.booking-row,
+.back-link,
+.hero-phone {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chip:active,
+.choice:active,
+.day:active:not(:disabled),
+.slot:active:not(:disabled),
+.booking-row:active {
+  transform: scale(0.97);
 }
 
 .chip:hover {

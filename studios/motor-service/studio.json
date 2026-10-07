@@ -1,0 +1,68 @@
+{
+  "$schema": "../studio.schema.json",
+  "slug": "motor-service",
+  "owner": { "email": "owner@motor-service.ru" },
+  "name": "Мотор Сервис",
+  "tagline": "Автосервис полного цикла",
+  "description": "Обслуживаем и ремонтируем легковые автомобили всех марок. Согласуем цену до начала работ, показываем старые запчасти и даём гарантию 12 месяцев.",
+  "timezone": "Europe/Moscow",
+  "contacts": {
+    "phone": "+7 999 123-45-67",
+    "address": "Москва, Варшавское шоссе, 125, стр. 3",
+    "howToFind": "Въезд с дублёра Варшавского шоссе, через шлагбаум — скажите охране «Мотор Сервис». Ворота с красной вывеской, парковка для клиентов у входа.",
+    "mapUrl": "https://yandex.ru/maps/?text=Москва, Варшавское шоссе, 125",
+    "telegram": "motor_service"
+  },
+  "branding": {
+    "logo": "logo.svg",
+    "hero": "hero.jpg",
+    "icon192": "icon-192.png",
+    "icon512": "icon-512.png"
+  },
+  "infoCards": [
+    { "icon": "shield", "title": "Гарантия 12 месяцев", "text": "На работы и установленные у нас запчасти — с записью в заказ-наряд." },
+    { "icon": "wrench", "title": "Цена до начала работ", "text": "Сначала диагностика и смета. Без вашего согласия дополнительные работы не делаем." },
+    { "icon": "camera", "title": "Фото и видео отчёт", "text": "Присылаем фото найденных проблем и отдаём старые запчасти." }
+  ],
+  "services": [
+    { "id": "diagnostics", "name": "Компьютерная диагностика", "description": "Чтение ошибок всех блоков, проверка датчиков и рекомендации по ремонту.", "price": 1500, "priceFrom": false, "durationMinutes": 60, "keywords": ["диагностика", "ошибки", "чек"], "active": true },
+    { "id": "oil-engine", "name": "Замена масла в двигателе", "description": "Масло и фильтр — ваши или наши. Сбросим сервисный интервал.", "price": 1200, "priceFrom": true, "durationMinutes": 30, "keywords": ["масло", "моторное масло"], "active": true },
+    { "id": "oil-gearbox", "name": "Замена масла в АКПП", "description": "Частичная или аппаратная замена масла в автоматической коробке передач.", "price": 3500, "priceFrom": true, "durationMinutes": 90, "keywords": ["масло в коробке", "коробка", "акпп"], "active": true },
+    { "id": "maintenance", "name": "Плановое ТО", "description": "Работы по регламенту производителя: масло, фильтры, проверка по списку.", "price": 6500, "priceFrom": true, "durationMinutes": 180, "keywords": ["то", "техобслуживание", "регламент"], "active": true },
+    { "id": "brakes", "name": "Замена тормозных колодок", "description": "Передняя или задняя ось, проверка дисков и тормозной жидкости.", "price": 1800, "priceFrom": true, "durationMinutes": 60, "keywords": ["колодки", "тормоза"], "active": true },
+    { "id": "alignment", "name": "Развал-схождение", "description": "Регулировка на 3D-стенде с распечаткой до и после.", "price": 2500, "priceFrom": false, "durationMinutes": 60, "keywords": ["развал", "сход-развал"], "active": true },
+    { "id": "suspension", "name": "Ремонт подвески", "description": "Замена рычагов, сайлентблоков, стоек и амортизаторов.", "price": 4000, "priceFrom": true, "durationMinutes": 240, "keywords": ["подвеска", "стук", "амортизаторы"], "active": true },
+    { "id": "engine-overhaul", "name": "Капитальный ремонт двигателя", "description": "Разборка, дефектовка, расточка и сборка. Машина остаётся у нас на 3 рабочих дня.", "price": 60000, "priceFrom": true, "durationMinutes": 1800, "keywords": ["капремонт", "двигатель", "мотор"], "active": true }
+  ],
+  "works": [
+    { "id": "w1", "image": "work-1.jpg", "caption": "Плановое ТО Toyota Camry: масло, фильтры, проверка по регламенту" },
+    { "id": "w2", "image": "work-2.jpg", "caption": "Капитальный ремонт двигателя Kia Rio за 3 дня" },
+    { "id": "w3", "image": "work-3.jpg", "caption": "Ремонт передней подвески и развал-схождение" },
+    { "id": "w4", "image": "work-4.jpg", "caption": "Замена тормозных дисков и колодок" }
+  ],
+  "schedule": {
+    "weekly": {
+      "mon": { "open": "09:00", "close": "20:00" },
+      "tue": { "open": "09:00", "close": "20:00" },
+      "wed": { "open": "09:00", "close": "20:00" },
+      "thu": { "open": "09:00", "close": "20:00" },
+      "fri": { "open": "09:00", "close": "20:00" },
+      "sat": { "open": "10:00", "close": "18:00" },
+      "sun": null
+    },
+    "exceptions": [
+      { "date": "2026-11-04", "hours": null, "note": "День народного единства" },
+      { "date": "2026-12-31", "hours": { "open": "09:00", "close": "15:00" }, "note": "Короткий день" },
+      { "date": "2027-01-01", "hours": null, "note": "Новый год" }
+    ]
+  },
+  "booking": {
+    "bays": 3,
+    "slotStepMinutes": 30,
+    "bufferMinutes": 15,
+    "minLeadMinutes": 120,
+    "horizonDays": 30,
+    "cancelMinHoursBefore": 12,
+    "cancellationPolicy": "Если планы поменялись позже — позвоните, перенесём запись."
+  }
+}

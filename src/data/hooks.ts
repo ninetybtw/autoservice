@@ -16,7 +16,8 @@ export const qk = {
 };
 
 export function useStudioQuery(slug: string) {
-  return useQuery({ queryKey: qk.studio(slug), queryFn: () => backend.getStudio(slug), staleTime: 60_000 });
+  // staleTime 0: сохранённая версия показывается сразу (и без сети), а свежая подгружается при каждом открытии
+  return useQuery({ queryKey: qk.studio(slug), queryFn: () => backend.getStudio(slug), staleTime: 0 });
 }
 
 export function useBusy(studio: Studio) {
@@ -140,17 +141,26 @@ export function useAddPayment(studio: Studio) {
   return useMutation({ mutationFn: (input: PaymentInput) => backend.addPayment(studio, input), onSettled: invalidate });
 }
 
+const settingsQueue = new Map<string, Promise<unknown>>();
+
 /**
- * Сохранение настроек студии. Принимает функцию-изменение: она применяется к самой свежей
+ * Сохранение настроек. Принимает функцию-изменение: она применяется к самой свежей
  * версии настроек с сервера, поэтому, например, замена одного фото не затирает другие работы.
+ * Сохранения выполняются строго по очереди — два быстрых действия подряд не перезаписывают друг друга.
  */
 export function useUpdateSettings(studio: Studio) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (change: StudioSettings | ((current: StudioSettings) => StudioSettings)) => {
-      const fresh = (await backend.getStudio(studio.slug)) ?? studio;
-      const next = typeof change === 'function' ? change(fresh.settings) : change;
-      return backend.updateSettings(fresh, next);
+    mutationFn: (change: StudioSettings | ((current: StudioSettings) => StudioSettings)) => {
+      const run = (settingsQueue.get(studio.id) ?? Promise.resolve())
+        .catch(() => undefined)
+        .then(async () => {
+          const fresh = (await backend.getStudio(studio.slug)) ?? studio;
+          const next = typeof change === 'function' ? change(fresh.settings) : change;
+          return backend.updateSettings(fresh, next);
+        });
+      settingsQueue.set(studio.id, run);
+      return run;
     },
     onSuccess: (settings) => {
       qc.setQueryData<Studio | null>(qk.studio(studio.slug), (old) => (old ? { ...old, settings } : old));

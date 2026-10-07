@@ -58,7 +58,7 @@ function LoginPage() {
         </div>
       )}
       <p className="muted" style={{ fontSize: 14 }}>
-        Забыли пароль? Напишите тому, кто подключал студию, — он выдаст новый.
+        Забыли пароль? Напишите тому, кто подключал сервис, — он выдаст новый.
       </p>
     </main>
   );
@@ -66,7 +66,7 @@ function LoginPage() {
 
 const TABS = [
   { to: '', label: 'Записи', icon: CalendarDots, end: true },
-  { to: 'studio', label: 'Студия', icon: Storefront },
+  { to: 'studio', label: 'Сервис', icon: Storefront },
   { to: 'services', label: 'Услуги', icon: ListChecks },
   { to: 'photos', label: 'Фото работ', icon: Images },
   { to: 'assistant', label: 'Помощник', icon: ChatCircleDots },

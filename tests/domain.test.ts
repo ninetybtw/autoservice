@@ -39,7 +39,7 @@ describe('данные клиента', () => {
 });
 
 describe('правила отмены', () => {
-  const settings = loadStudio('noir-detailing');
+  const settings = loadStudio('motor-service');
   const start = zonedToInstant('2026-10-10', '12:00', settings.timezone).toISOString();
   it('разрешает отмену заранее и запрещает позже срока', () => {
     expect(canClientCancel(settings, { status: 'booked', startAt: start }, new Date('2026-10-08T12:00:00Z')).ok).toBe(true);
@@ -51,7 +51,7 @@ describe('правила отмены', () => {
 
 describe('календарь', () => {
   it('создаёт .ics с напоминанием за сутки', () => {
-    const settings = loadStudio('noir-detailing');
+    const settings = loadStudio('motor-service');
     const ics = buildIcs(
       {
         id: 'abc',
@@ -72,6 +72,6 @@ describe('календарь', () => {
     );
     expect(ics).toContain('DTSTART:20261010T090000Z');
     expect(ics).toContain('TRIGGER:-P1D');
-    expect(ics).toContain('LOCATION:Москва\\, ул. Электрозаводская\\, 21\\, бокс 4');
+    expect(ics).toContain('LOCATION:Москва\\, Варшавское шоссе\\, 125\\, стр. 3');
   });
 });

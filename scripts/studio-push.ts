@@ -39,7 +39,7 @@ async function main() {
   const slug = args.find((a) => !a.startsWith('--'));
   const force = args.includes('--force');
   const password = args.find((a) => a.startsWith('--password='))?.slice('--password='.length) || randomBytes(9).toString('base64url');
-  if (!slug) throw new Error('Укажите slug: pnpm studio:push noir-detailing');
+  if (!slug) throw new Error('Укажите slug: pnpm studio:push motor-service');
 
   const url = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -55,7 +55,7 @@ async function main() {
 
   const { data: existing } = await db.from('studios').select('id').eq('slug', slug).maybeSingle();
   if (existing && !force) {
-    throw new Error(`Студия ${slug} уже опубликована. Чтобы перезаписать настройки, добавьте --force (правки владельца будут потеряны).`);
+    throw new Error(`Автосервис ${slug} уже опубликован. Чтобы перезаписать настройки, добавьте --force (правки владельца будут потеряны).`);
   }
   let studioId = existing?.id as string | undefined;
   if (!studioId) {
@@ -111,7 +111,7 @@ async function main() {
   const { error: linkError } = await db.from('studio_owners').upsert({ studio_id: studioId, user_id: userId });
   if (linkError) throw linkError;
 
-  console.log(`\n✓ Студия «${settings.name}» опубликована\n`);
+  console.log(`\n✓ Автосервис «${settings.name}» опубликован\n`);
   console.log(`  Ссылка для клиентов: ${appUrl}/${slug}`);
   console.log(`  Кабинет владельца:   ${appUrl}/${slug}/admin`);
   console.log(`  Логин:               ${owner.email}`);

@@ -286,7 +286,7 @@ function BookingForm({ booking, initialDate, onDone }: { booking?: Booking; init
         {nearby.isPending ? (
           <p className="muted">Загружаем расписание…</p>
         ) : slots.length === 0 ? (
-          <p className="muted">В этот день студия не работает или услуга не помещается в график.</p>
+          <p className="muted">В этот день сервис не работает или услуга не помещается в график.</p>
         ) : (
           <div className="slots">
             {slots.map((s) => (

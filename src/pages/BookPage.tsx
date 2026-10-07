@@ -192,7 +192,7 @@ export function BookPage() {
                 {slots.length === 0 ? (
                   <p className="muted">В этот день записи нет.</p>
                 ) : (
-                  <div className="slots" role="group" aria-label="Время">
+                  <div key={date} className="slots" role="group" aria-label="Время">
                     {slots.map((s) => (
                       <button
                         key={s.time}
@@ -294,7 +294,7 @@ export function BookPage() {
                     <Clock size={20} weight="fill" aria-hidden />
                     <div>
                       <strong>Готово {formatWhen(slot.workEnd, now, tz)}</strong>
-                      <small>Ориентировочно, по графику студии</small>
+                      <small>Ориентировочно, по графику сервиса</small>
                     </div>
                   </div>
                   {contact.car && (
@@ -330,7 +330,7 @@ export function BookPage() {
                   />
                 </div>
                 <p className="muted" style={{ fontSize: 14, textAlign: 'center' }}>
-                  Нажимая кнопку, вы соглашаетесь, что студия свяжется с вами по указанному телефону.
+                  Нажимая кнопку, вы соглашаетесь, что сервис свяжется с вами по указанному телефону.
                 </p>
               </>
             )}

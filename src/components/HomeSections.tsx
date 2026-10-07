@@ -92,7 +92,7 @@ export function AboutSection() {
   const { settings } = useStudio();
   return (
     <Reveal as="section" className="section" id="about">
-      <span className="eyebrow">О студии</span>
+      <span className="eyebrow">О сервисе</span>
       <h2 className="section-title" style={{ marginTop: 8 }}>
         {settings.name}
       </h2>
@@ -187,7 +187,7 @@ export function AssistantSection({ onAsk }: { onAsk: (q: string | null) => void 
           </span>
           <div>
             <h2>Спросите помощника</h2>
-            <p>Отвечает по ценам и свободному времени этой студии.</p>
+            <p>Отвечает по ценам и свободному времени этого автосервиса.</p>
           </div>
         </div>
         <div className="chips">
@@ -253,7 +253,7 @@ export function ContactsSection() {
             </div>
           )}
           <p className="muted" style={{ margin: '12px 0 0', fontSize: 14 }}>
-            Сейчас в студии {formatTime(now, settings.timezone)}
+            Сейчас в сервисе {formatTime(now, settings.timezone)}
           </p>
         </div>
       </div>

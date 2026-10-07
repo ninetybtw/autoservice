@@ -186,7 +186,7 @@ export function BookingPage() {
           try {
             await cancel.mutateAsync({ id, token });
           } catch (e) {
-            setCancelError(e instanceof UserError ? e.message : 'Не удалось отменить. Позвоните в студию.');
+            setCancelError(e instanceof UserError ? e.message : 'Не удалось отменить. Позвоните в сервис.');
           }
           setConfirm(false);
         }}

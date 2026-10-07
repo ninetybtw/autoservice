@@ -12,11 +12,11 @@ export function RootPage() {
     <main className="page page-narrow">
       <p className="eyebrow">Онлайн-запись</p>
       <h1 className="section-title" style={{ marginTop: 8 }}>
-        Запись в автостудию
+        Запись в автосервис
       </h1>
       {IS_DEMO ? (
         <div className="stack">
-          <p className="lead">Демо-режим: данные хранятся в этом браузере. Выберите студию:</p>
+          <p className="lead">Демо-режим: данные хранятся в этом браузере. Выберите автосервис:</p>
           {data?.map((s) => (
             <a key={s.slug} href={`/${s.slug}`} className="card row" style={{ textDecoration: 'none' }}>
               <span className="grow" style={{ fontWeight: 800, fontSize: 18 }}>
@@ -28,7 +28,7 @@ export function RootPage() {
           ))}
         </div>
       ) : (
-        <p className="lead">Откройте ссылку, которую прислала студия.</p>
+        <p className="lead">Откройте ссылку, которую прислал автосервис.</p>
       )}
     </main>
   );

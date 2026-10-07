@@ -38,12 +38,12 @@ export function buildManifest(slug: string | null, studio: PublicStudio | null) 
   const base = slug ? `/${slug}` : '/';
   const icon192 = studio?.branding?.icon192 || '/icons/icon-192.png';
   const icon512 = studio?.branding?.icon512 || '/icons/icon-512.png';
-  const name = studio?.name ?? 'Запись в автостудию';
+  const name = studio?.name ?? 'Запись в автосервис';
   return {
     id: base,
     name,
     short_name: name.length > 14 ? name.slice(0, 14).trim() : name,
-    description: studio?.tagline || 'Онлайн-запись в автостудию',
+    description: studio?.tagline || 'Онлайн-запись в автосервис',
     lang: 'ru',
     start_url: base,
     scope: base,

@@ -48,7 +48,7 @@ self.addEventListener('push', (event) => {
   }
   event.waitUntil(
     self.registration.showNotification(data.title ?? 'Напоминание о записи', {
-      body: data.body ?? 'Завтра у вас запись в автостудию.',
+      body: data.body ?? 'Завтра у вас запись в автосервис.',
       tag: data.tag,
       icon: '/icons/icon-192.png',
       badge: '/icons/badge-96.png',

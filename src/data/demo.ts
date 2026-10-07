@@ -9,18 +9,19 @@ import {
   type Booking,
   type BookingStatus,
   type Payment,
+  type Service,
   type Studio,
   type StudioSettings,
 } from '@shared/schema.ts';
 import { bookingsToBusy, generateToken, hashToken, toPublicBooking } from '@shared/db.ts';
-import { checkSlot, localDateOf, SLOT_ERROR_TEXT, addDaysToDate, zonedToInstant } from '@shared/slots.ts';
+import { checkSlot, hoursForDate, localDateOf, SLOT_ERROR_TEXT, addDaysToDate, zonedToInstant } from '@shared/slots.ts';
 import { canClientCancel } from '@shared/policy.ts';
 import { fallbackReply } from '@shared/assistant/fallback.ts';
 import { bundledStudios } from './bundled.ts';
 import { planOwnerBooking, UserError, type Backend } from './backend.ts';
 
 export const DEMO_PASSWORD = 'demo1234';
-const KEY = 'autoservice-demo:v1';
+const KEY = 'autoservice-demo:v2';
 
 interface DemoBooking extends Booking {
   tokenHash?: string;
@@ -57,7 +58,7 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toStr
 
 function studioById(id: string): Studio {
   const s = bundledStudios().find((f) => `demo-${f.slug}` === id);
-  if (!s) throw new UserError('Студия не найдена');
+  if (!s) throw new UserError('Автосервис не найден');
   return { id, slug: s.slug, settings: state.settings[s.slug] ?? strip(s) };
 }
 
@@ -66,7 +67,12 @@ function strip(file: ReturnType<typeof bundledStudios>[number]): StudioSettings 
   return settings;
 }
 
-/** Несколько записей и оплат, чтобы календарь и кабинет не были пустыми. */
+/**
+ * Демо-записи и оплаты, чтобы календарь и кабинет не были пустыми:
+ * прошлые дни (готово и оплачено), сегодня (машина принята),
+ * ближайший рабочий день (все посты заняты пару часов — видно «занято»)
+ * и длинная многодневная работа.
+ */
 function seed(studio: Studio): void {
   if (state.bookings[studio.id]) return;
   const s = studio.settings;
@@ -76,30 +82,28 @@ function seed(studio: Studio): void {
   const payments: Payment[] = [];
   const people = [
     ['Алексей', 'BMW X5', '+79161234501'],
-    ['Марина', 'Kia Sportage', '+79161234502'],
+    ['Марина', 'Kia Rio', '+79161234502'],
     ['Игорь', 'Toyota Camry', '+79161234503'],
-    ['Светлана', 'Mercedes GLC', '+79161234504'],
-    ['Дмитрий', 'Lexus RX', '+79161234505'],
-    ['Ольга', 'Volkswagen Tiguan', '+79161234506'],
+    ['Светлана', 'Hyundai Solaris', '+79161234504'],
+    ['Дмитрий', 'Lada Vesta', '+79161234505'],
+    ['Ольга', 'Volkswagen Polo', '+79161234506'],
+    ['Сергей', 'Skoda Octavia', '+79161234507'],
+    ['Наталья', 'Renault Duster', '+79161234508'],
   ];
-  const plan: [number, string, number][] = [
-    [-3, '10:00', 0],
-    [-2, '12:00', 1],
-    [-1, '11:00', 4],
-    [0, '10:00', 2],
-    [1, '11:00', 3],
-    [1, '14:00', 0],
-    [2, '10:00', s.services.length - 1],
-  ];
-  plan.forEach(([dayOffset, time, svcIndex], i) => {
-    const service = s.services[Math.min(svcIndex, s.services.length - 1)];
-    const date = addDaysToDate(today, dayOffset);
-    const start = zonedToInstant(date, time, s.timezone);
-    const busy = bookingsToBusy(bookings);
-    const check = checkSlot(s, service, start, busy, now, { ignoreLead: true });
-    if (!check.ok) return;
+  const byLength = s.services.slice().sort((a, b) => a.durationMinutes - b.durationMinutes);
+  const medium = byLength[Math.floor(byLength.length / 2)];
+  const longest = byLength[byLength.length - 1];
+
+  const add = (date: string, minutesAfterOpen: number, service: Service, status: BookingStatus, bay?: number) => {
+    const hours = hoursForDate(s.schedule, date);
+    if (!hours) return;
+    const [h, m] = hours.open.split(':').map(Number);
+    const t = h * 60 + m + minutesAfterOpen;
+    const start = zonedToInstant(date, `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`, s.timezone);
+    const check = checkSlot(s, service, start, bookingsToBusy(bookings), now, { ignoreLead: true, preferBay: bay });
+    if (!check.ok || (bay && check.bay !== bay)) return;
+    const i = bookings.length;
     const [name, car, phone] = people[i % people.length];
-    const past = dayOffset < 0;
     const b: DemoBooking = {
       id: `seed-${i}`,
       studioId: studio.id,
@@ -110,7 +114,7 @@ function seed(studio: Studio): void {
       startAt: start.toISOString(),
       endAt: check.timing.workEnd.toISOString(),
       blockEnd: check.timing.blockEnd.toISOString(),
-      status: past ? 'ready' : dayOffset === 0 ? 'arrived' : 'booked',
+      status,
       customerName: name,
       customerPhone: phone,
       car,
@@ -119,7 +123,7 @@ function seed(studio: Studio): void {
       createdAt: new Date(start.getTime() - 3 * 86_400_000).toISOString(),
     };
     bookings.push(b);
-    if (past) {
+    if (status === 'ready') {
       payments.push({
         id: `seed-p-${i}`,
         studioId: studio.id,
@@ -131,7 +135,18 @@ function seed(studio: Studio): void {
         createdAt: check.timing.workEnd.toISOString(),
       });
     }
-  });
+  };
+
+  for (const d of [-3, -2, -1]) add(addDaysToDate(today, d), 60, s.services[(d + 3) % s.services.length], 'ready');
+  add(today, 0, medium, 'arrived');
+  // ближайший рабочий день после сегодняшнего: все посты заняты одновременно
+  let next = addDaysToDate(today, 1);
+  for (let i = 0; i < 7 && !hoursForDate(s.schedule, next); i++) next = addDaysToDate(next, 1);
+  for (let bay = 1; bay <= s.booking.bays; bay++) add(next, 120, medium, 'booked', bay);
+  add(next, 0, byLength[0], 'booked');
+  // многодневная работа через день
+  if (longest !== medium) add(addDaysToDate(next, 1), 0, longest, 'booked');
+
   state.bookings[studio.id] = bookings;
   state.payments[studio.id] = payments;
   save();
@@ -173,7 +188,7 @@ export function createDemoBackend(): Backend {
       if (!parsed.success) throw new UserError(parsed.error.issues[0]?.message ?? 'Проверьте данные', 'invalid');
       const data = parsed.data;
       const studio = await this.getStudio(data.slug);
-      if (!studio) throw new UserError('Студия не найдена');
+      if (!studio) throw new UserError('Автосервис не найден');
       const service = studio.settings.services.find((s) => s.id === data.serviceId && s.active);
       if (!service) throw new UserError('Услуга не найдена');
       const list = state.bookings[studio.id] ?? [];
@@ -230,7 +245,7 @@ export function createDemoBackend(): Backend {
     async ask(slug, mode, messages) {
       await delay(350);
       const studio = await this.getStudio(slug);
-      if (!studio) throw new UserError('Студия не найдена');
+      if (!studio) throw new UserError('Автосервис не найден');
       const bookings = state.bookings[studio.id] ?? [];
       return fallbackReply(messages, {
         mode,

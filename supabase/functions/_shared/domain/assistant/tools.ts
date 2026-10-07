@@ -54,14 +54,14 @@ export function scheduleText(settings: StudioSettings): string {
 // Описание инструментов для OpenAI (function calling)
 // ---------------------------------------------------------------------------
 
-const dateParam = { type: 'string', description: 'Дата в формате ГГГГ-ММ-ДД (часовой пояс студии)' };
+const dateParam = { type: 'string', description: 'Дата в формате ГГГГ-ММ-ДД (часовой пояс сервиса)' };
 
 export const CLIENT_TOOLS = [
   {
     type: 'function' as const,
     function: {
       name: 'get_services',
-      description: 'Список услуг студии с ценами и длительностью.',
+      description: 'Список услуг автосервиса с ценами и длительностью.',
       parameters: { type: 'object', properties: {}, additionalProperties: false },
     },
   },
@@ -87,7 +87,7 @@ export const CLIENT_TOOLS = [
     type: 'function' as const,
     function: {
       name: 'get_studio_info',
-      description: 'Адрес, как найти студию, телефон, график работы и правила отмены.',
+      description: 'Адрес, как найти автосервис, телефон, график работы и правила отмены.',
       parameters: { type: 'object', properties: {}, additionalProperties: false },
     },
   },
@@ -99,7 +99,7 @@ export const OWNER_TOOLS = [
     type: 'function' as const,
     function: {
       name: 'get_bookings',
-      description: 'Записи студии за период: время, клиент, машина, услуга, статус, цена и оплачено.',
+      description: 'Записи автосервиса за период: время, клиент, машина, услуга, статус, цена и оплачено.',
       parameters: {
         type: 'object',
         properties: { from: dateParam, to: { ...dateParam, description: 'Последний день периода включительно, ГГГГ-ММ-ДД' } },
@@ -236,13 +236,13 @@ export function systemPrompt(ctx: AssistantContext): string {
   const s = ctx.settings;
   const today = localDateOf(ctx.now, s.timezone);
   const common = [
-    `Сегодня ${formatDateLong(today)} (${today}), сейчас ${formatTime(ctx.now, s.timezone)}. Часовой пояс студии: ${s.timezone}.`,
+    `Сегодня ${formatDateLong(today)} (${today}), сейчас ${formatTime(ctx.now, s.timezone)}. Часовой пояс сервиса: ${s.timezone}.`,
     'Отвечай по-русски, коротко и по делу: 1–5 предложений или короткий список.',
     'Бери факты только из инструментов. Ничего не придумывай: ни услуг, ни цен, ни скидок, ни свободного времени.',
   ];
   if (ctx.mode === 'owner') {
     return [
-      `Ты — помощник владельца автостудии «${s.name}» в его кабинете.`,
+      `Ты — помощник владельца автосервиса «${s.name}» в его кабинете.`,
       ...common,
       'Для вопросов о записях вызывай get_bookings, для итогов и денег — get_stats.',
       '«Получено денег» — это оплаты минус возвраты по дате платежа. «Заезды» — машины, принятые в работу (статусы «Машина принята» и «Готово»).',
@@ -250,7 +250,7 @@ export function systemPrompt(ctx: AssistantContext): string {
     ].join('\n');
   }
   return [
-    `Ты — помощник автостудии «${s.name}». Помогаешь клиентам узнать цены, свободное время и как добраться.`,
+    `Ты — помощник автосервиса «${s.name}». Помогаешь клиентам узнать цены, свободное время и как добраться.`,
     ...common,
     'Цены — из get_services, свободное время — из find_free_slots, адрес, график и правила — из get_studio_info.',
     'Свободное время зависит от длительности услуги. Если клиент спрашивает про время или цену, а услуга неясна или подходит несколько услуг, задай уточняющий вопрос и перечисли подходящие варианты.',

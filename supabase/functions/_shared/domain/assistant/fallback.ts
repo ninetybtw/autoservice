@@ -44,7 +44,7 @@ function nearestText(ctx: AssistantContext, service: Service, periodDate?: strin
   if (periodDate) {
     const slots = slotsForDate({ ...q, date: periodDate });
     const free = slots.filter((x) => x.status === 'free');
-    if (slots.length === 0) return `${formatDateLong(periodDate)} на «${service.name}» записи нет — студия не работает или день уже закрыт.`;
+    if (slots.length === 0) return `${formatDateLong(periodDate)} на «${service.name}» записи нет — сервис не работает или день уже закрыт.`;
     if (free.length === 0) return `${formatDateLong(periodDate)} на «${service.name}» всё занято. Посмотрите другой день.`;
     return `${formatDateLong(periodDate)} на «${service.name}» свободно: ${free.map((x) => x.time).slice(0, 12).join(', ')}.`;
   }
@@ -92,8 +92,8 @@ export function clientFallback(messages: ChatMessage[], ctx: AssistantContext): 
 
   if (intents.has('greeting') && intents.size === 1) {
     return {
-      text: `Здравствуйте! Я помощник студии «${ctx.settings.name}». Подскажу цены, свободное время и как нас найти.`,
-      suggestions: ['Когда ближайшее окно?', 'Сколько стоит полировка?', 'Как найти студию?'],
+      text: `Здравствуйте! Я помощник автосервиса «${ctx.settings.name}». Подскажу цены, свободное время и как нас найти.`,
+      suggestions: ['Когда ближайшее окно?', 'Сколько стоит замена масла?', 'Как вас найти?'],
     };
   }
 
@@ -135,7 +135,7 @@ export function clientFallback(messages: ChatMessage[], ctx: AssistantContext): 
   if (parts.length === 0) {
     return {
       text: 'Я могу подсказать цены, ближайшее свободное время и как нас найти. Что вас интересует?',
-      suggestions: ['Когда ближайшее окно?', 'Сколько стоит полировка?', 'Как найти студию?'],
+      suggestions: ['Когда ближайшее окно?', 'Сколько стоит замена масла?', 'Как вас найти?'],
     };
   }
   return { text: parts.join('\n\n'), suggestions };
@@ -221,7 +221,7 @@ export function ownerFallback(messages: ChatMessage[], ctx: AssistantContext): A
   const client = clientFallback(messages, { ...ctx, mode: 'client' });
   if (!client.text.startsWith('Я могу подсказать')) return client;
   return {
-    text: 'Я отвечаю по записям, машинам и деньгам вашей студии. Например:',
+    text: 'Я отвечаю по записям, машинам и деньгам вашего автосервиса. Например:',
     suggestions: ['Что у меня завтра?', 'Сколько машин было на неделе?', 'Сколько денег получено?'],
   };
 }

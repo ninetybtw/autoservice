@@ -12,12 +12,38 @@ import type { LiquidGLLens } from 'liquid-gl';
 
 const lenses = new Set<LiquidGLLens>();
 let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+let lastScroll = 0;
+let lastCapture = 0;
+let watching = false;
 
-/** Пересъёмка фона для всех стёкол — после загрузки данных, картинок и анимаций появления. */
+function watchScroll() {
+  if (watching || typeof window === 'undefined') return;
+  watching = true;
+  window.addEventListener('scroll', () => (lastScroll = performance.now()), { passive: true });
+}
+
+/**
+ * Пересъёмка фона для стёкол — после загрузки данных, картинок и появления разделов.
+ * Снимок страницы — тяжёлая операция, поэтому она откладывается, пока человек листает,
+ * и выполняется в паузе (не чаще раза в 1,5 с), чтобы прокрутка и анимации не дёргались.
+ */
 export function refreshGlass(delay = 450) {
+  watchScroll();
   clearTimeout(refreshTimer);
-  refreshTimer = setTimeout(() => {
-    for (const lens of lenses) void lens.renderer?.captureSnapshot();
+  refreshTimer = setTimeout(function run() {
+    const now = performance.now();
+    const sinceScroll = now - lastScroll;
+    const sinceCapture = now - lastCapture;
+    if (sinceScroll < 600 || sinceCapture < 1500) {
+      refreshTimer = setTimeout(run, Math.max(600 - sinceScroll, 1500 - sinceCapture, 100));
+      return;
+    }
+    const capture = () => {
+      lastCapture = performance.now();
+      for (const lens of lenses) void lens.renderer?.captureSnapshot();
+    };
+    if ('requestIdleCallback' in window) window.requestIdleCallback(capture, { timeout: 1500 });
+    else capture();
   }, delay);
 }
 
@@ -51,9 +77,24 @@ interface Props {
   zIndex?: number;
   /** Качество снимка фона: для всей страницы меньше, чтобы не тратить память */
   resolution?: number;
+  /** Матовость (размытие фона), px */
+  frost?: number;
+  /** Сила преломления */
+  refraction?: number;
+  bevelDepth?: number;
 }
 
-export function LiquidGlass({ snapshot, tint = 'rgba(10, 10, 14, 0.28)', className = '', ready = true, zIndex = 1, resolution }: Props) {
+export function LiquidGlass({
+  snapshot,
+  tint = 'rgba(10, 10, 14, 0.28)',
+  className = '',
+  ready = true,
+  zIndex = 1,
+  resolution,
+  frost = 2.5,
+  refraction = 0.012,
+  bevelDepth = 0.06,
+}: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const cls = `lg-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
 
@@ -72,12 +113,13 @@ export function LiquidGlass({ snapshot, tint = 'rgba(10, 10, 14, 0.28)', classNa
         target: `.${cls}`,
         snapshot,
         resolution: resolution ?? Math.min(2, window.devicePixelRatio || 1),
-        refraction: 0.012,
-        bevelDepth: 0.06,
+        refraction,
+        bevelDepth,
         bevelWidth: 0.2,
-        frost: 2.5,
+        frost,
         shadow: false,
-        specular: !reduce,
+        // анимированные блики перерисовываются каждый кадр — дают «вкрапления» и лишнюю нагрузку
+        specular: false,
         reveal: reduce ? 'none' : 'fade',
         tilt: false,
         tint,
@@ -103,7 +145,7 @@ export function LiquidGlass({ snapshot, tint = 'rgba(10, 10, 14, 0.28)', classNa
         }
       }
     };
-  }, [ready, snapshot, cls, tint, zIndex, resolution]);
+  }, [ready, snapshot, cls, tint, zIndex, resolution, frost, refraction, bevelDepth]);
 
   return <span ref={ref} aria-hidden="true" className={`glass-layer ${cls} ${className}`} />;
 }

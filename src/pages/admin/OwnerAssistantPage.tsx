@@ -6,10 +6,10 @@ export default function OwnerAssistantPage() {
   return (
     <main className="page page-narrow stack">
       <p className="muted" style={{ margin: 0 }}>
-        Помощник отвечает по записям и оплатам вашей студии.
+        Помощник отвечает по записям и оплатам вашего автосервиса.
       </p>
       <div className="card">
-        <AssistantChat mode="owner" examples={OWNER_EXAMPLES} intro="Спросите про записи, машины или деньги — отвечу по данным студии." />
+        <AssistantChat mode="owner" examples={OWNER_EXAMPLES} intro="Спросите про записи, машины или деньги — отвечу по данным сервиса." />
       </div>
     </main>
   );

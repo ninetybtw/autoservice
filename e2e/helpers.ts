@@ -1,12 +1,16 @@
 import type { Page } from '@playwright/test';
 
-export const SLUG = 'noir-detailing';
-export const OWNER = { email: 'owner@noir-detailing.ru', password: 'demo1234' };
+export const SLUG = 'motor-service';
+export const OWNER = { email: 'owner@motor-service.ru', password: 'demo1234' };
 
-/** Завтрашняя дата в часовом поясе студии (Москва). */
-export function tomorrow(): string {
-  const d = new Date(Date.now() + 24 * 3600_000);
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(d);
+/** Первый рабочий день (не воскресенье) начиная со смещения в днях — по времени сервиса (Москва). */
+export function openDay(offset: number): string {
+  for (let i = offset; i < offset + 7; i++) {
+    const d = new Date(Date.now() + i * 24 * 3600_000);
+    const wd = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Moscow', weekday: 'short' }).format(d);
+    if (wd !== 'Sun') return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Moscow' }).format(d);
+  }
+  throw new Error('нет рабочего дня');
 }
 
 export async function login(page: Page) {

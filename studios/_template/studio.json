@@ -4,9 +4,9 @@
   "owner": {
     "email": "owner@example.com"
   },
-  "name": "НАЗВАНИЕ СТУДИИ",
+  "name": "НАЗВАНИЕ АВТОСЕРВИСА",
   "tagline": "Короткое описание — одна строка",
-  "description": "Два-три предложения о студии.",
+  "description": "Два-три предложения о сервисе.",
   "timezone": "Europe/Moscow",
   "contacts": {
     "phone": "+7 900 000-00-00",
@@ -23,89 +23,127 @@
   "infoCards": [
     {
       "icon": "shield",
-      "title": "Гарантия до 3 лет",
-      "text": "На керамику и защитную плёнку — с ежегодной проверкой покрытия."
+      "title": "Гарантия 12 месяцев",
+      "text": "На работы и установленные у нас запчасти — с записью в заказ-наряд."
     },
     {
-      "icon": "clock",
-      "title": "Точно в срок",
-      "text": "Называем время готовности при записи и сообщаем, если работа закончится раньше."
+      "icon": "wrench",
+      "title": "Цена до начала работ",
+      "text": "Сначала диагностика и смета. Без вашего согласия дополнительные работы не делаем."
     },
     {
-      "icon": "coffee",
-      "title": "Зона ожидания",
-      "text": "Кофе, Wi‑Fi и окно в бокс — можно наблюдать за работой."
+      "icon": "camera",
+      "title": "Фото и видео отчёт",
+      "text": "Присылаем фото найденных проблем и отдаём старые запчасти."
     }
   ],
   "services": [
     {
-      "id": "complex-wash",
-      "name": "Комплексная мойка",
-      "description": "Двухфазная мойка кузова, салон пылесосом, стёкла, чернение резины.",
-      "price": 2500,
-      "priceFrom": false,
-      "durationMinutes": 90,
-      "keywords": [
-        "мойка",
-        "помыть"
-      ],
-      "active": true
-    },
-    {
-      "id": "polish-light",
-      "name": "Лёгкая полировка",
-      "description": "Убираем мелкие царапины и голограммы, возвращаем блеск за один день.",
-      "price": 12000,
-      "priceFrom": true,
-      "durationMinutes": 240,
-      "keywords": [],
-      "active": true
-    },
-    {
-      "id": "polish-restore",
-      "name": "Восстановительная полировка",
-      "description": "Многоэтапная полировка с замером толщины ЛКП и удалением глубоких дефектов.",
-      "price": 25000,
-      "priceFrom": true,
-      "durationMinutes": 480,
-      "keywords": [],
-      "active": true
-    },
-    {
-      "id": "ceramic",
-      "name": "Керамическое покрытие",
-      "description": "Подготовка, лёгкая полировка и два слоя керамики. Машина остаётся у нас на 2 дня.",
-      "price": 35000,
-      "priceFrom": true,
-      "durationMinutes": 960,
-      "keywords": [
-        "керамика",
-        "защита кузова"
-      ],
-      "active": true
-    },
-    {
-      "id": "interior",
-      "name": "Химчистка салона",
-      "description": "Сиденья, потолок, ковры и пластик с обработкой паром и защитой кожи.",
-      "price": 9000,
-      "priceFrom": true,
-      "durationMinutes": 300,
-      "keywords": [
-        "химчистка",
-        "салон"
-      ],
-      "active": true
-    },
-    {
-      "id": "headlights",
-      "name": "Полировка фар",
-      "description": "Убираем помутнение и желтизну, защищаем фары лаком.",
-      "price": 3500,
+      "id": "diagnostics",
+      "name": "Компьютерная диагностика",
+      "description": "Чтение ошибок всех блоков, проверка датчиков и рекомендации по ремонту.",
+      "price": 1500,
       "priceFrom": false,
       "durationMinutes": 60,
       "keywords": [
-        "фары"
+        "диагностика",
+        "ошибки",
+        "чек"
+      ],
+      "active": true
+    },
+    {
+      "id": "oil-engine",
+      "name": "Замена масла в двигателе",
+      "description": "Масло и фильтр — ваши или наши. Сбросим сервисный интервал.",
+      "price": 1200,
+      "priceFrom": true,
+      "durationMinutes": 30,
+      "keywords": [
+        "масло",
+        "моторное масло"
+      ],
+      "active": true
+    },
+    {
+      "id": "oil-gearbox",
+      "name": "Замена масла в АКПП",
+      "description": "Частичная или аппаратная замена масла в автоматической коробке передач.",
+      "price": 3500,
+      "priceFrom": true,
+      "durationMinutes": 90,
+      "keywords": [
+        "масло в коробке",
+        "коробка",
+        "акпп"
+      ],
+      "active": true
+    },
+    {
+      "id": "maintenance",
+      "name": "Плановое ТО",
+      "description": "Работы по регламенту производителя: масло, фильтры, проверка по списку.",
+      "price": 6500,
+      "priceFrom": true,
+      "durationMinutes": 180,
+      "keywords": [
+        "то",
+        "техобслуживание",
+        "регламент"
+      ],
+      "active": true
+    },
+    {
+      "id": "brakes",
+      "name": "Замена тормозных колодок",
+      "description": "Передняя или задняя ось, проверка дисков и тормозной жидкости.",
+      "price": 1800,
+      "priceFrom": true,
+      "durationMinutes": 60,
+      "keywords": [
+        "колодки",
+        "тормоза"
+      ],
+      "active": true
+    },
+    {
+      "id": "alignment",
+      "name": "Развал-схождение",
+      "description": "Регулировка на 3D-стенде с распечаткой до и после.",
+      "price": 2500,
+      "priceFrom": false,
+      "durationMinutes": 60,
+      "keywords": [
+        "развал",
+        "сход-развал"
+      ],
+      "active": true
+    },
+    {
+      "id": "suspension",
+      "name": "Ремонт подвески",
+      "description": "Замена рычагов, сайлентблоков, стоек и амортизаторов.",
+      "price": 4000,
+      "priceFrom": true,
+      "durationMinutes": 240,
+      "keywords": [
+        "подвеска",
+        "стук",
+        "амортизаторы"
+      ],
+      "active": true
+    },
+    {
+      "id": "engine-overhaul",
+      "name": "Капитальный ремонт двигателя",
+      "description": "Разборка, дефектовка, расточка и сборка. Машина остаётся у нас на 3 рабочих дня.",
+      "price": 60000,
+      "priceFrom": true,
+      "durationMinutes": 1800,
+      "keywords": [
+        "капремонт",
+        "двигатель",
+        "мотор"
       ],
       "active": true
     }
@@ -114,54 +152,51 @@
     {
       "id": "w1",
       "image": "work-1.jpg",
-      "caption": "Белый седан после восстановительной полировки"
+      "caption": "Плановое ТО Toyota Camry: масло, фильтры, проверка по регламенту"
     },
     {
       "id": "w2",
       "image": "work-2.jpg",
-      "caption": "Керамика в два слоя: глубина цвета и защита на 3 года"
+      "caption": "Капитальный ремонт двигателя Kia Rio за 3 дня"
     },
     {
       "id": "w3",
       "image": "work-3.jpg",
-      "caption": "Синий купе — лёгкая полировка за один день"
+      "caption": "Ремонт передней подвески и развал-схождение"
     },
     {
       "id": "w4",
       "image": "work-4.jpg",
-      "caption": "Колёсные диски после химчистки и защиты"
+      "caption": "Замена тормозных дисков и колодок"
     }
   ],
   "schedule": {
     "weekly": {
       "mon": {
-        "open": "10:00",
-        "close": "21:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "tue": {
-        "open": "10:00",
-        "close": "21:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "wed": {
-        "open": "10:00",
-        "close": "21:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "thu": {
-        "open": "10:00",
-        "close": "21:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "fri": {
-        "open": "10:00",
-        "close": "21:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "sat": {
         "open": "10:00",
-        "close": "21:00"
+        "close": "18:00"
       },
-      "sun": {
-        "open": "11:00",
-        "close": "19:00"
-      }
+      "sun": null
     },
     "exceptions": [
       {
@@ -172,8 +207,8 @@
       {
         "date": "2026-12-31",
         "hours": {
-          "open": "10:00",
-          "close": "16:00"
+          "open": "09:00",
+          "close": "15:00"
         },
         "note": "Короткий день"
       },
@@ -185,12 +220,12 @@
     ]
   },
   "booking": {
-    "bays": 2,
+    "bays": 3,
     "slotStepMinutes": 30,
-    "bufferMinutes": 30,
+    "bufferMinutes": 15,
     "minLeadMinutes": 120,
     "horizonDays": 30,
-    "cancelMinHoursBefore": 24,
-    "cancellationPolicy": "Если планы поменялись позже — просто позвоните, перенесём запись."
+    "cancelMinHoursBefore": 12,
+    "cancellationPolicy": "Если планы поменялись позже — позвоните, перенесём запись."
   }
 }
