@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router';
-import { Spinner } from '@astryxdesign/core/Spinner';
 import { StudioContext } from '../studio.tsx';
 import { useStudioQuery } from '../data/hooks.ts';
 import { NotFound } from './NotFound.tsx';
@@ -15,8 +14,13 @@ export function StudioLayout() {
 
   if (isPending) {
     return (
-      <div style={{ minHeight: '100svh', display: 'grid', placeItems: 'center' }}>
-        <Spinner size="lg" label="Загружаем автосервис" />
+      <div aria-busy="true" aria-label="Загружаем автосервис" style={{ minHeight: '100svh' }}>
+        <div className="skeleton" style={{ height: 'min(70svh, 600px)', borderRadius: 0 }} />
+        <div className="page stack">
+          <div className="skeleton" style={{ height: 44, width: '70%' }} />
+          <div className="skeleton" style={{ height: 22, width: '90%' }} />
+          <div className="skeleton" style={{ height: 62, borderRadius: 22 }} />
+        </div>
       </div>
     );
   }

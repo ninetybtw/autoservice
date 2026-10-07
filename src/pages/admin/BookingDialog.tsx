@@ -62,6 +62,7 @@ function BookingView({ booking, onEdit, onClose }: { booking: Booking; onEdit: (
   const setStatus = useSetStatus(studio);
   const [error, setError] = useState<string | null>(null);
   const [status, setLocalStatus] = useState<BookingStatus>(booking.status);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
   const change = async (next: BookingStatus) => {
     setError(null);
@@ -123,9 +124,23 @@ function BookingView({ booking, onEdit, onClose }: { booking: Booking; onEdit: (
           <Button label="Вернуть в «Записан»" variant="secondary" icon={<ArrowCounterClockwise size={18} />} onClick={() => change('booked')} />
         )}
         <Button label="Перенести / изменить" variant="secondary" icon={<CalendarBlank size={18} />} onClick={onEdit} />
-        {status !== 'cancelled' && <Button label="Отменить запись" variant="destructive" icon={<XCircle size={18} />} onClick={() => change('cancelled')} />}
+        {status !== 'cancelled' && !confirmCancel && (
+          <Button label="Отменить запись" variant="destructive" icon={<XCircle size={18} />} onClick={() => setConfirmCancel(true)} />
+        )}
         <Button label="Позвонить" variant="ghost" icon={<Phone size={18} />} href={`tel:${tel}`} />
       </div>
+      {confirmCancel && (
+        <div className="confirm-row" role="alertdialog" aria-label="Подтверждение отмены">
+          <strong>Отменить запись? Клиент: {booking.customerName}</strong>
+          <span className="muted" style={{ fontSize: 15 }}>
+            Время освободится для других. Предупредите клиента по телефону.
+          </span>
+          <div className="row">
+            <Button label="Да, отменить" variant="destructive" onClick={() => change('cancelled')} isLoading={setStatus.isPending} />
+            <Button label="Не отменять" variant="secondary" onClick={() => setConfirmCancel(false)} />
+          </div>
+        </div>
+      )}
 
       <Payments booking={booking} />
     </div>

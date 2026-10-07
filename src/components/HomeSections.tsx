@@ -135,7 +135,7 @@ export function ServicesSection() {
         ))}
       </div>
       <p style={{ marginTop: 14 }}>
-        <Link to={`/${slug}/services`} className="muted">
+        <Link to={`/${slug}/services`} className="text-link">
           Все услуги на отдельной странице →
         </Link>
       </p>
@@ -225,7 +225,7 @@ export function ContactsSection() {
             </div>
           </div>
           <div className="row">
-            <Button label="Маршрут" variant="primary" icon={<NavigationArrow size={18} weight="fill" />} href={mapUrl} target="_blank" rel="noopener" />
+            <Button label="Маршрут" variant="secondary" icon={<NavigationArrow size={18} weight="fill" />} href={mapUrl} target="_blank" rel="noopener" />
             <Button label={c.phone} variant="secondary" icon={<Phone size={18} weight="fill" />} href={`tel:${tel}`} />
           </div>
         </div>

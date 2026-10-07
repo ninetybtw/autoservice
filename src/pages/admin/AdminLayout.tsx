@@ -8,6 +8,7 @@ import { TextInput } from '@astryxdesign/core/TextInput';
 import { Banner } from '@astryxdesign/core/Banner';
 import { Spinner } from '@astryxdesign/core/Spinner';
 import { backend, UserError } from '../../data/index.ts';
+import { useRouteFocus } from '../../lib/useRouteFocus.ts';
 import { qk, useOwner } from '../../data/hooks.ts';
 import { useMedia, useStudio } from '../../studio.tsx';
 import { IS_DEMO } from '../../config.ts';
@@ -77,6 +78,7 @@ export default function AdminLayout() {
   const media = useMedia();
   const qc = useQueryClient();
   const owner = useOwner(studio);
+  const content = useRouteFocus();
 
   if (owner.isPending) {
     return (
@@ -90,6 +92,9 @@ export default function AdminLayout() {
   const logo = media(studio.settings.branding.logo);
   return (
     <div className="admin">
+      <a className="skip-link" href="#content">
+        Перейти к содержимому
+      </a>
       <header className="admin-top">
         <div className="admin-top-inner">
           {logo && <img src={logo} alt="" width={36} height={36} style={{ borderRadius: 10 }} />}
@@ -120,7 +125,9 @@ export default function AdminLayout() {
           ))}
         </nav>
       </header>
-      <Outlet />
+      <div id="content" ref={content} tabIndex={-1}>
+        <Outlet />
+      </div>
       <ScrollRestoration />
     </div>
   );

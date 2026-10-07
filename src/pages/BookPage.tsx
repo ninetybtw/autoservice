@@ -5,7 +5,6 @@ import { Button } from '@astryxdesign/core/Button';
 import { TextInput } from '@astryxdesign/core/TextInput';
 import { TextArea } from '@astryxdesign/core/TextArea';
 import { Banner } from '@astryxdesign/core/Banner';
-import { Spinner } from '@astryxdesign/core/Spinner';
 import { customerSchema, formatPrice, type Service } from '@shared/schema.ts';
 import { bookingDates, dayAvailability, localDateOf, slotsForDate } from '@shared/slots.ts';
 import { formatDateLong, formatDayNumber, formatWeekdayShort, formatWhen, plural } from '@shared/format.ts';
@@ -106,10 +105,30 @@ export function BookPage() {
     if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
+  const contactFilled = Boolean(contact.customerName.trim() && contact.customerPhone.trim() && contact.car.trim());
+  const step = !service ? 1 : !date ? 2 : !slot ? 3 : !contactFilled ? 4 : 5;
   return (
     <main>
       <PageHeader title="Запись" back={`/${slug}`} />
       <form className="page page-narrow" onSubmit={submit} noValidate>
+        <div
+          className="steps-progress"
+          role="progressbar"
+          aria-label="Прогресс записи"
+          aria-valuemin={1}
+          aria-valuemax={5}
+          aria-valuenow={step}
+          aria-valuetext={`Шаг ${step} из 5`}
+        >
+          <span className="label">
+            Шаг {step} из 5 · {['Выберите услугу', 'Выберите дату', 'Выберите время', 'Ваши данные', 'Проверьте и подтвердите'][step - 1]}
+          </span>
+          <span className="track" aria-hidden>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <span key={n} className={n <= step ? 'on' : ''} />
+            ))}
+          </span>
+        </div>
         {/* 1. Услуга */}
         <h2 className="step-title">
           <span className={`step-num ${service ? 'done' : ''}`}>1</span>Услуга
@@ -145,7 +164,11 @@ export function BookPage() {
               <span className={`step-num ${date ? 'done' : ''}`}>2</span>Дата
             </h2>
             {busy.isPending ? (
-              <Spinner label="Загружаем расписание" />
+              <div className="date-strip" aria-busy="true" aria-label="Загружаем расписание">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="skeleton" style={{ height: 88, borderRadius: 16 }} />
+                ))}
+              </div>
             ) : busy.isError && !busy.data ? (
               <Banner status="error" title="Не удалось загрузить расписание" description="Проверьте интернет и обновите страницу." />
             ) : (
@@ -254,7 +277,7 @@ export function BookPage() {
                       style={errors.customerPhone ? { borderColor: 'var(--red-bright)' } : undefined}
                     />
                     {errors.customerPhone && (
-                      <div id="err-phone" style={{ color: '#ff8a8a', fontSize: 14, marginTop: 6 }}>
+                      <div id="err-phone" role="alert" style={{ color: '#ff8a8a', fontSize: 14, marginTop: 6 }}>
                         {errors.customerPhone}
                       </div>
                     )}
@@ -309,7 +332,7 @@ export function BookPage() {
                   </div>
                 </div>
                 {serverError && (
-                  <div style={{ marginTop: 12 }}>
+                  <div style={{ marginTop: 12 }} role="alert">
                     <Banner status="error" title={serverError} />
                   </div>
                 )}
@@ -318,7 +341,7 @@ export function BookPage() {
                     <Banner status="warning" title="Нет сети" description="Подключитесь к интернету, чтобы подтвердить запись." />
                   </div>
                 )}
-                <div className="sticky-actions" style={{ margin: '12px -16px 0', bottom: 'calc(var(--nav-h) + var(--nav-gap) + var(--safe-b))' }}>
+                <div style={{ marginTop: 16 }}>
                   <Button
                     label="Подтвердить запись"
                     variant="primary"

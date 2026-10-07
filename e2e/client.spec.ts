@@ -17,6 +17,8 @@ test.describe('главная страница', () => {
   });
 
   test('нижняя навигация не закрывает содержимое', async ({ page }) => {
+    // меряем итоговую раскладку, а не кадр анимации появления
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(`/${SLUG}`);
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await page.waitForTimeout(400);

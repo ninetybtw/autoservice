@@ -87,7 +87,7 @@ export function BookingPage() {
             <div className="check">
               <CheckCircle size={44} weight="fill" aria-hidden />
             </div>
-            <h1>Вы записаны!</h1>
+            <h2>Вы записаны!</h2>
             <p className="lead">Ждём вас {formatWhen(booking.startAt, now, tz)}.</p>
           </div>
         )}
