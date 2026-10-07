@@ -12,3 +12,4 @@ coverage
 supabase/.temp
 supabase/.branches
 .DS_Store
+__pycache__/
