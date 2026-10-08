@@ -16,7 +16,7 @@
     "studio:new": "node scripts/studio-new.mjs",
     "studio:push": "node --experimental-strip-types scripts/studio-push.ts",
     "functions:sync": "node scripts/sync-functions.mjs",
-    "functions:deploy": "node scripts/sync-functions.mjs && supabase functions deploy",
+    "functions:deploy": "node scripts/sync-functions.mjs && npx supabase@latest functions deploy",
     "studio:schema": "node --experimental-strip-types scripts/build-schema.ts",
     "studio:images": "node scripts/generate-demo-images.mjs"
   },
@@ -57,7 +57,6 @@
     "jsdom": "^30.1.2",
     "openai": "^7.30.0",
     "sharp": "^0.35.5",
-    "supabase": "^2.120.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.3",
     "vite-plugin-pwa": "^2.0.0",

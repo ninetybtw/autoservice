@@ -84,11 +84,11 @@ pnpm studio:push avto-pro                   # публикация в Supabase
 
 ### 1. Supabase
 1. Создайте проект на supabase.com.
-2. Примените миграции: `pnpm exec supabase link --project-ref <ref>` и `pnpm exec supabase db push`
+2. Примените миграции: `npx supabase@latest link --project-ref <ref>` и `npx supabase@latest db push`
    (или выполните `supabase/migrations/*.sql` в SQL Editor).
 3. Секреты функций:
    ```bash
-   pnpm exec supabase secrets set OPENAI_API_KEY=sk-... OPENAI_MODEL=gpt-5-mini \
+   npx supabase@latest secrets set OPENAI_API_KEY=sk-... OPENAI_MODEL=gpt-5-mini \
      VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:you@example.com \
      CRON_SECRET=<случайная строка> APP_URL=https://<сайт>
    ```

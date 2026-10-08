@@ -1,5 +1,4 @@
 onlyBuiltDependencies:
-  - supabase
   - sharp
 ignoredBuiltDependencies:
   - '@astryxdesign/cli'
