@@ -118,7 +118,7 @@ const images = {
   'work-4.jpg': scene({ paint: '#2b2c30', paint2: '#0a0a0b', transform: 'translate(-1500 -380) scale(2.1)', lift: false }),
 };
 
-for (const [name, svg] of Object.entries(images)) {
+for (const [name, svg] of Object.entries(process.env.LOGO_ONLY ? {} : images)) {
   const isHero = name === 'hero.jpg';
   await sharp(Buffer.from(svg))
     .resize(isHero ? 1600 : 1200)

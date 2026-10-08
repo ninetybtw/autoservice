@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight, Phone } from '@phosphor-icons/react';
-import { LiquidGlass } from './LiquidGlass.tsx';
+import { LiquidGlass, refreshGlass } from './LiquidGlass.tsx';
+import { useMatchMedia } from '../lib/useMatchMedia.ts';
 import { Photo } from './Photo.tsx';
 import { useMedia, useStudio } from '../studio.tsx';
 
 export function Hero() {
   const { slug, settings } = useStudio();
   const media = useMedia();
-  const hero = media(settings.branding.hero);
+  // На вертикальном экране (телефон) — вертикальное фото, если оно есть
+  const portrait = useMatchMedia('(max-aspect-ratio: 1/1)');
+  const mobileHero = media(settings.branding.heroMobile);
+  const hero = portrait && mobileHero ? mobileHero : media(settings.branding.hero);
   const logo = media(settings.branding.logo);
   const [loaded, setLoaded] = useState(!hero);
   const tel = settings.contacts.phone.replace(/[^\d+]/g, '');
@@ -24,7 +28,11 @@ export function Hero() {
             alt=""
             fetchPriority="high"
             decoding="async"
-            onReady={() => setLoaded(true)}
+            className={hero === mobileHero ? 'is-portrait' : undefined}
+            onReady={() => {
+              setLoaded(true);
+              refreshGlass(200);
+            }}
           />
         )}
         <div className="hero-shade" />

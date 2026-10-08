@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * Создаёт папку новой студии из шаблона: studios/<slug>/studio.json + демо-фото.
+ * Создаёт папку нового автосервиса из шаблона: studios/<slug>/studio.json, главное фото, логотип.
+ * Фото работ — заглушки «Ваше фото», владелец загружает свои в кабинете.
  *   pnpm studio:new my-studio "Название студии"
  * Дальше: отредактируйте studio.json, замените фото своими и выполните pnpm studio:push my-studio
  */
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { copyFileSync, existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
 const [slug, name = 'Новая студия'] = process.argv.slice(2);
@@ -23,5 +24,6 @@ tpl.slug = slug;
 tpl.name = name;
 writeFileSync(`${dir}/studio.json`, JSON.stringify(tpl, null, 2) + '\n');
 const logo = name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 6).toUpperCase() || 'AUTO';
-execFileSync('node', ['scripts/generate-demo-images.mjs', slug, '#d0584f', logo], { stdio: 'inherit' });
+for (const f of ['hero.jpg', 'hero-mobile.jpg']) copyFileSync(`studios/_template/${f}`, `${dir}/${f}`);
+execFileSync('node', ['scripts/generate-demo-images.mjs', slug, '#d0584f', logo], { stdio: 'inherit', env: { ...process.env, LOGO_ONLY: '1' } });
 console.log(`\n✓ ${dir}/studio.json создан. Заполните его и замените фото в ${dir}/`);

@@ -15,7 +15,7 @@ import { useUpdateSettings } from '../../data/hooks.ts';
 import { useMedia, useStudio } from '../../studio.tsx';
 import { prepareImage, uniqueName } from '../../lib/images.ts';
 import { FileButton, SettingsSection } from './AdminCommon.tsx';
-import { Photo } from '../../components/Photo.tsx';
+import { Photo, PhotoPlaceholder } from '../../components/Photo.tsx';
 
 function WorkCard({ work, index, total }: { work: Work; index: number; total: number }) {
   const studio = useStudio();
@@ -48,12 +48,21 @@ function WorkCard({ work, index, total }: { work: Work; index: number; total: nu
 
   return (
     <article className="card photo-card stack" data-testid={`work-${work.id}`}>
-      <Photo src={media(work.image)} fallback={media(work.fallback) || undefined} alt={work.caption || 'Фото работы'} />
+      {work.image ? (
+        <Photo src={media(work.image)} fallback={media(work.fallback) || undefined} alt={work.caption || 'Фото работы'} />
+      ) : (
+        <PhotoPlaceholder />
+      )}
       <TextInput label="Подпись под фото" value={caption} onChange={setCaption} />
       <div className="row">
         <Button label="Сохранить подпись" size="sm" variant={changed ? 'primary' : 'secondary'} icon={<Check size={16} weight="bold" />} isDisabled={!changed} onClick={saveCaption} />
       </div>
-      <FileButton label="Заменить это фото" onFile={replacePhoto} testId={`replace-${work.id}`} />
+      <FileButton
+        label={work.image ? 'Заменить это фото' : 'Загрузить фото'}
+        variant={work.image ? 'secondary' : 'primary'}
+        onFile={replacePhoto}
+        testId={`replace-${work.id}`}
+      />
       <div className="row" style={{ justifyContent: 'flex-end', gap: 4 }}>
         <IconButton label="Левее" size="sm" variant="ghost" icon={<ArrowUp size={16} />} isDisabled={index === 0} onClick={() => move(-1)} />
         <IconButton label="Правее" size="sm" variant="ghost" icon={<ArrowDown size={16} />} isDisabled={index === total - 1} onClick={() => move(1)} />

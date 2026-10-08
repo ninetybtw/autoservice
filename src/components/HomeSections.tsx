@@ -12,7 +12,7 @@ import { useMedia, useStudio } from '../studio.tsx';
 import { Reveal } from './Reveal.tsx';
 import { INFO_ICON } from './icons.tsx';
 import { ServiceRow } from './ServiceRow.tsx';
-import { Photo } from './Photo.tsx';
+import { Photo, PhotoPlaceholder } from './Photo.tsx';
 import { CLIENT_EXAMPLES } from './AssistantDialog.tsx';
 
 /** Карточка «Запись» на главной: услуга → ближайшее время → переход к выбору даты. */
@@ -153,12 +153,17 @@ export function WorksSection() {
   return (
     <Reveal as="section" className="section" id="works">
       <h2 className="section-title">Наши работы</h2>
-      <div className="works">
+      {/* Лента прокручивается с клавиатуры даже без кликабельных фото */}
+      <div className="works" tabIndex={0} role="region" aria-label="Фото работ, листайте вбок">
         {settings.works.map((w, i) => (
           <figure key={w.id} className="work">
-            <button type="button" onClick={() => setOpen(i)} aria-label={`Открыть фото: ${w.caption || 'работа'}`}>
-              <Photo src={media(w.image)} fallback={media(w.fallback) || undefined} alt={w.caption} loading="lazy" decoding="async" />
-            </button>
+            {w.image ? (
+              <button type="button" onClick={() => setOpen(i)} aria-label={`Открыть фото: ${w.caption || 'работа'}`}>
+                <Photo src={media(w.image)} fallback={media(w.fallback) || undefined} alt={w.caption} loading="lazy" decoding="async" />
+              </button>
+            ) : (
+              <PhotoPlaceholder />
+            )}
             {w.caption && <figcaption>{w.caption}</figcaption>}
           </figure>
         ))}

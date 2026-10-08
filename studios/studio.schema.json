@@ -78,6 +78,9 @@
           "default": "",
           "type": "string"
         },
+        "heroMobile": {
+          "type": "string"
+        },
         "heroFallback": {
           "type": "string"
         },
@@ -197,8 +200,8 @@
             "maxLength": 60
           },
           "image": {
-            "type": "string",
-            "minLength": 1
+            "default": "",
+            "type": "string"
           },
           "fallback": {
             "type": "string"
@@ -210,8 +213,7 @@
           }
         },
         "required": [
-          "id",
-          "image"
+          "id"
         ]
       }
     },

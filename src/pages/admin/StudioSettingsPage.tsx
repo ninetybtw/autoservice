@@ -82,17 +82,20 @@ export default function StudioSettingsPage() {
     }
   };
 
-  const uploadBranding = async (kind: 'logo' | 'hero', file: File) => {
+  const uploadBranding = async (kind: 'logo' | 'hero' | 'heroMobile', file: File) => {
     if (kind === 'hero') {
       const url = await backend.uploadMedia(studio, await prepareImage(file, 2000), uniqueName('hero'));
       await update.mutateAsync((c) => ({ ...c, branding: { ...c.branding, hero: url, heroFallback: undefined } }));
+    } else if (kind === 'heroMobile') {
+      const url = await backend.uploadMedia(studio, await prepareImage(file, 1600), uniqueName('hero-mobile'));
+      await update.mutateAsync((c) => ({ ...c, branding: { ...c.branding, heroMobile: url } }));
     } else {
       const logo = await backend.uploadMedia(studio, await prepareImage(file, 600, 0.9), uniqueName('logo'));
       const icon192 = await backend.uploadMedia(studio, await makeIcon(file, 192), uniqueName('icon-192', 'png'));
       const icon512 = await backend.uploadMedia(studio, await makeIcon(file, 512), uniqueName('icon-512', 'png'));
       await update.mutateAsync((c) => ({ ...c, branding: { ...c.branding, logo, icon192, icon512 } }));
     }
-    toast({ body: kind === 'hero' ? 'Главное фото обновлено' : 'Логотип и иконка приложения обновлены' });
+    toast({ body: kind === 'logo' ? 'Логотип и иконка приложения обновлены' : 'Главное фото обновлено' });
   };
 
   const today = localDateOf(new Date(), studio.settings.timezone);
@@ -119,7 +122,14 @@ export default function StudioSettingsPage() {
             alt="Главное фото"
           />
         )}
-        <FileButton label="Заменить главное фото" onFile={(f) => uploadBranding('hero', f)} testId="hero-file" />
+        <FileButton label="Заменить главное фото (горизонтальное)" onFile={(f) => uploadBranding('hero', f)} testId="hero-file" />
+        {studio.settings.branding.heroMobile && (
+          <img className="media-preview" style={{ maxWidth: 220, maxHeight: 380 }} src={media(studio.settings.branding.heroMobile)} alt="Главное фото для телефона" />
+        )}
+        <FileButton label="Фото для телефона (вертикальное)" onFile={(f) => uploadBranding('heroMobile', f)} testId="hero-mobile-file" />
+        <p className="muted" style={{ margin: 0, fontSize: 14 }}>
+          Вертикальное фото показывается на телефонах. Если его нет — используется горизонтальное.
+        </p>
       </SettingsSection>
 
       <SettingsSection title="Контакты" description="Адрес, телефон и подсказка, как найти сервис.">

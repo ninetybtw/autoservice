@@ -83,11 +83,12 @@ async function main() {
       logo: (await upload(settings.branding.logo)) ?? '',
       hero: (await upload(settings.branding.hero)) ?? '',
       heroFallback: await upload(settings.branding.heroFallback),
+      heroMobile: await upload(settings.branding.heroMobile),
       icon192: await upload(settings.branding.icon192),
       icon512: await upload(settings.branding.icon512),
     },
     works: await Promise.all(
-      settings.works.map(async (w) => ({ ...w, image: (await upload(w.image)) ?? w.image, fallback: await upload(w.fallback) })),
+      settings.works.map(async (w) => ({ ...w, image: w.image ? ((await upload(w.image)) ?? w.image) : '', fallback: await upload(w.fallback) })),
     ),
   };
   const { error: updError } = await db.from('studios').update({ settings: published }).eq('id', studioId);

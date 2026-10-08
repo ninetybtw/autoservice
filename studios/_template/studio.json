@@ -17,6 +17,7 @@
   "branding": {
     "logo": "logo.svg",
     "hero": "hero.jpg",
+    "heroMobile": "hero-mobile.jpg",
     "icon192": "icon-192.png",
     "icon512": "icon-512.png"
   },
@@ -151,23 +152,18 @@
   "works": [
     {
       "id": "w1",
-      "image": "work-1.jpg",
-      "caption": "Плановое ТО Toyota Camry: масло, фильтры, проверка по регламенту"
+      "image": "",
+      "caption": "Подпись к фото работы"
     },
     {
       "id": "w2",
-      "image": "work-2.jpg",
-      "caption": "Капитальный ремонт двигателя Kia Rio за 3 дня"
+      "image": "",
+      "caption": "Подпись к фото работы"
     },
     {
       "id": "w3",
-      "image": "work-3.jpg",
-      "caption": "Ремонт передней подвески и развал-схождение"
-    },
-    {
-      "id": "w4",
-      "image": "work-4.jpg",
-      "caption": "Замена тормозных дисков и колодок"
+      "image": "",
+      "caption": "Подпись к фото работы"
     }
   ],
   "schedule": {

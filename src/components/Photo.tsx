@@ -1,4 +1,5 @@
 import { useState, type ImgHTMLAttributes } from 'react';
+import { Camera } from '@phosphor-icons/react';
 
 interface Props extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'onError' | 'onLoad' | 'crossOrigin'> {
   src: string;
@@ -33,5 +34,15 @@ export function Photo({ src, fallback, onReady, ...rest }: Props) {
         else onReady?.();
       }}
     />
+  );
+}
+
+/** Заглушка «Ваше фото» вместо фото работы — владелец загружает своё в кабинете. */
+export function PhotoPlaceholder() {
+  return (
+    <div className="photo-placeholder" data-photo="" role="img" aria-label="Здесь будет фото работы">
+      <Camera size={34} weight="duotone" aria-hidden />
+      Ваше фото
+    </div>
   );
 }

@@ -76,7 +76,8 @@ export type Service = z.infer<typeof serviceSchema>;
 
 export const workSchema = z.object({
   id: z.string().min(1).max(60),
-  image: z.string().min(1),
+  /** Пусто — на сайте показывается заглушка «Ваше фото», владелец загружает своё в кабинете */
+  image: z.string().default(''),
   /** Запасное фото, если основное не загрузилось (например, внешняя ссылка недоступна). */
   fallback: z.string().optional(),
   caption: z.string().trim().max(160).default(''),
@@ -125,6 +126,8 @@ export const studioSettingsSchema = z.object({
   branding: z.object({
     logo: z.string().default(''),
     hero: z.string().default(''),
+    /** Вертикальное главное фото для телефона (необязательно) */
+    heroMobile: z.string().optional(),
     /** Запасное главное фото, если основное не загрузилось. */
     heroFallback: z.string().optional(),
     /** Квадратные иконки приложения (генерируются из логотипа). */
