@@ -28,6 +28,8 @@ interface DemoBooking extends Booking {
 }
 interface DemoState {
   settings: Record<string, StudioSettings>;
+  /** С какой версии файла studio.json сделаны правки — если файл обновился, правки сбрасываются */
+  settingsBase?: Record<string, string>;
   bookings: Record<string, DemoBooking[]>;
   payments: Record<string, Payment[]>;
   session: string | null;
@@ -59,7 +61,14 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toStr
 function studioById(id: string): Studio {
   const s = bundledStudios().find((f) => `demo-${f.slug}` === id);
   if (!s) throw new UserError('Автосервис не найден');
-  return { id, slug: s.slug, settings: state.settings[s.slug] ?? strip(s) };
+  return { id, slug: s.slug, settings: currentSettings(s) };
+}
+
+/** Настройки с учётом правок владельца — только если файл студии не менялся после этих правок. */
+function currentSettings(file: ReturnType<typeof bundledStudios>[number]): StudioSettings {
+  const override = state.settings[file.slug];
+  if (override && state.settingsBase?.[file.slug] === JSON.stringify(strip(file))) return override;
+  return strip(file);
 }
 
 function strip(file: ReturnType<typeof bundledStudios>[number]): StudioSettings {
@@ -166,13 +175,13 @@ export function createDemoBackend(): Backend {
     supportsPush: false,
 
     async listStudios() {
-      return bundledStudios().map((s) => ({ slug: s.slug, name: state.settings[s.slug]?.name ?? s.name }));
+      return bundledStudios().map((s) => ({ slug: s.slug, name: currentSettings(s).name }));
     },
 
     async getStudio(slug) {
       const file = bundledStudios().find((s) => s.slug === slug);
       if (!file) return null;
-      const studio: Studio = { id: `demo-${slug}`, slug, settings: state.settings[slug] ?? strip(file) };
+      const studio: Studio = { id: `demo-${slug}`, slug, settings: currentSettings(file) };
       seed(studio);
       return studio;
     },
@@ -340,7 +349,9 @@ export function createDemoBackend(): Backend {
       await delay(200);
       const parsed = studioSettingsSchema.parse(settings);
       const prev = state.settings[studio.slug];
+      const file = bundledStudios().find((f) => f.slug === studio.slug);
       state.settings[studio.slug] = parsed;
+      if (file) state.settingsBase = { ...state.settingsBase, [studio.slug]: JSON.stringify(strip(file)) };
       try {
         save();
       } catch (e) {
