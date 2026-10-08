@@ -12,17 +12,19 @@
     <title>Запись в автосервис</title>
     <link rel="icon" href="/icons/icon-192.png" type="image/png" />
     <script>
-      // Свой манифест и иконка для каждой студии: /<slug> → /api/manifest?slug=<slug>
+      // Свой манифест и иконка для каждого автосервиса: /<slug> → /m/<slug>.webmanifest (файл создаётся при сборке).
+      // VITE_MANIFEST_API=1 — брать манифест из серверной функции /api/manifest (для сервисов из базы Supabase).
       (function () {
+        var api = '%VITE_MANIFEST_API%' === '1';
         var slug = location.pathname.split('/')[1] || '';
         var ok = /^[a-z0-9-]{2,40}$/.test(slug);
         var m = document.createElement('link');
         m.rel = 'manifest';
-        m.href = ok ? '/api/manifest?slug=' + slug : '/api/manifest';
+        m.href = api ? (ok ? '/api/manifest?slug=' + slug : '/api/manifest') : '/m/' + (ok ? slug : 'default') + '.webmanifest';
         document.head.appendChild(m);
         var a = document.createElement('link');
         a.rel = 'apple-touch-icon';
-        a.href = ok ? '/api/manifest?icon=1&slug=' + slug : '/icons/icon-192.png';
+        a.href = !ok ? '/icons/icon-192.png' : api ? '/api/manifest?icon=1&slug=' + slug : '/studio-icons/' + slug + '/icon-192.png';
         document.head.appendChild(a);
       })();
     </script>

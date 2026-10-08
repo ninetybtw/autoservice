@@ -138,12 +138,14 @@ test.describe('помощник', () => {
 test.describe('установка на телефон', () => {
   test('у каждой студии свой манифест и иконка', async ({ page, request }) => {
     await page.goto(`/${SLUG}`);
-    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', `/api/manifest?slug=${SLUG}`);
-    const m = await (await request.get(`/api/manifest?slug=${SLUG}`)).json();
+    await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', `/m/${SLUG}.webmanifest`);
+    const m = await (await request.get(`/m/${SLUG}.webmanifest`)).json();
     expect(m).toMatchObject({ name: 'Мотор Сервис', display: 'standalone', start_url: `/${SLUG}`, scope: `/${SLUG}` });
     const icon = await request.get(m.icons[0].src);
     expect(icon.headers()['content-type']).toContain('image/png');
-    const other = await (await request.get('/api/manifest?slug=garage-77')).json();
+    const other = await (await request.get('/m/garage-77.webmanifest')).json();
     expect(other.name).toBe('Гараж 77');
+    // серверная функция для автосервисов из базы тоже работает
+    expect((await (await request.get(`/api/manifest?slug=${SLUG}`)).json()).name).toBe('Мотор Сервис');
   });
 });
