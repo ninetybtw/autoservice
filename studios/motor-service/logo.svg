@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#0a0a0a"/>
-  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="#ff1f2d" stroke-width="10"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="none" stroke="#d0584f" stroke-width="10"/>
   <g transform="translate(256 190) rotate(-45)">
-    <rect x="-14" y="-10" width="28" height="150" rx="14" fill="#ff1f2d" transform="translate(0 -40)"/>
-    <path d="M-46 -70 a46 46 0 1 0 92 0 l-22 0 l0 22 l-48 0 l0 -22 z" fill="#ff1f2d" transform="translate(0 -40)"/>
+    <rect x="-14" y="-10" width="28" height="150" rx="14" fill="#d0584f" transform="translate(0 -40)"/>
+    <path d="M-46 -70 a46 46 0 1 0 92 0 l-22 0 l0 22 l-48 0 l0 -22 z" fill="#d0584f" transform="translate(0 -40)"/>
   </g>
   <text x="256" y="372" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="6" text-anchor="middle" fill="#fff">MOTOR</text>
 </svg>

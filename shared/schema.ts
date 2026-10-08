@@ -76,6 +76,8 @@ export type Service = z.infer<typeof serviceSchema>;
 export const workSchema = z.object({
   id: z.string().min(1).max(60),
   image: z.string().min(1),
+  /** Запасное фото, если основное не загрузилось (например, внешняя ссылка недоступна). */
+  fallback: z.string().optional(),
   caption: z.string().trim().max(160).default(''),
 });
 export type Work = z.infer<typeof workSchema>;
@@ -122,6 +124,8 @@ export const studioSettingsSchema = z.object({
   branding: z.object({
     logo: z.string().default(''),
     hero: z.string().default(''),
+    /** Запасное главное фото, если основное не загрузилось. */
+    heroFallback: z.string().optional(),
     /** Квадратные иконки приложения (генерируются из логотипа). */
     icon192: z.string().optional(),
     icon512: z.string().optional(),

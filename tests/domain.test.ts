@@ -14,7 +14,14 @@ describe('файлы студий', () => {
   it.each(slugs)('%s/studio.json проходит проверку и все фото на месте', (slug) => {
     const s = studioFileSchema.parse(JSON.parse(readFileSync(`studios/${slug}/studio.json`, 'utf8')));
     expect(s.slug).toBe(slug);
-    const files = [s.branding.logo, s.branding.hero, s.branding.icon192, s.branding.icon512, ...s.works.map((w) => w.image)];
+    const files = [
+      s.branding.logo,
+      s.branding.hero,
+      s.branding.heroFallback,
+      s.branding.icon192,
+      s.branding.icon512,
+      ...s.works.flatMap((w) => [w.image, w.fallback]),
+    ];
     for (const f of files) {
       if (f && !/^(https?:|\/|data:)/.test(f)) expect(existsSync(`studios/${slug}/${f}`), f).toBe(true);
     }

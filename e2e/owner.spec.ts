@@ -88,7 +88,7 @@ test.describe('кабинет владельца', () => {
   test('фото работ: заменить одно фото, изменить подпись, добавить — остальные на месте', async ({ page }) => {
     await login(page);
     await page.getByRole('link', { name: 'Фото работ' }).click();
-    const srcs = async () => page.locator('.photo-card img').evaluateAll((els) => els.map((e) => (e as HTMLImageElement).getAttribute('src')));
+    const srcs = async () => page.locator('.photo-card img').evaluateAll((els) => els.map((e) => e.getAttribute('data-photo')));
     await expect(page.locator('.photo-card img')).toHaveCount(4);
     const before = await srcs();
 

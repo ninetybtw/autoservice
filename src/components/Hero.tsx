@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight, Phone } from '@phosphor-icons/react';
 import { LiquidGlass } from './LiquidGlass.tsx';
+import { Photo } from './Photo.tsx';
 import { useMedia, useStudio } from '../studio.tsx';
 
 export function Hero() {
@@ -17,14 +18,13 @@ export function Hero() {
       {/* Сквозь стеклянную кнопку видно только это фото — без текста соседних разделов */}
       <div className="hero-media">
         {hero && (
-          <img
+          <Photo
             src={hero}
+            fallback={media(settings.branding.heroFallback) || undefined}
             alt=""
-            crossOrigin="anonymous"
             fetchPriority="high"
             decoding="async"
-            onLoad={() => setLoaded(true)}
-            onError={() => setLoaded(true)}
+            onReady={() => setLoaded(true)}
           />
         )}
         <div className="hero-shade" />

@@ -15,6 +15,7 @@ import { useUpdateSettings } from '../../data/hooks.ts';
 import { useMedia, useStudio } from '../../studio.tsx';
 import { prepareImage, uniqueName } from '../../lib/images.ts';
 import { FileButton, SettingsSection } from './AdminCommon.tsx';
+import { Photo } from '../../components/Photo.tsx';
 
 function WorkCard({ work, index, total }: { work: Work; index: number; total: number }) {
   const studio = useStudio();
@@ -26,7 +27,7 @@ function WorkCard({ work, index, total }: { work: Work; index: number; total: nu
 
   const replacePhoto = async (file: File) => {
     const url = await backend.uploadMedia(studio, await prepareImage(file), uniqueName(`work-${work.id}`));
-    await update.mutateAsync((c) => ({ ...c, works: c.works.map((w) => (w.id === work.id ? { ...w, image: url } : w)) }));
+    await update.mutateAsync((c) => ({ ...c, works: c.works.map((w) => (w.id === work.id ? { ...w, image: url, fallback: undefined } : w)) }));
     toast({ body: 'Фото заменено' });
   };
   const saveCaption = async () => {
@@ -47,7 +48,7 @@ function WorkCard({ work, index, total }: { work: Work; index: number; total: nu
 
   return (
     <article className="card photo-card stack" data-testid={`work-${work.id}`}>
-      <img src={media(work.image)} alt={work.caption || 'Фото работы'} />
+      <Photo src={media(work.image)} fallback={media(work.fallback) || undefined} alt={work.caption || 'Фото работы'} />
       <TextInput label="Подпись под фото" value={caption} onChange={setCaption} />
       <div className="row">
         <Button label="Сохранить подпись" size="sm" variant={changed ? 'primary' : 'secondary'} icon={<Check size={16} weight="bold" />} isDisabled={!changed} onClick={saveCaption} />

@@ -12,6 +12,7 @@ import { useMedia, useStudio } from '../studio.tsx';
 import { Reveal } from './Reveal.tsx';
 import { INFO_ICON } from './icons.tsx';
 import { ServiceRow } from './ServiceRow.tsx';
+import { Photo } from './Photo.tsx';
 import { CLIENT_EXAMPLES } from './AssistantDialog.tsx';
 
 /** Карточка «Запись» на главной: услуга → ближайшее время → переход к выбору даты. */
@@ -156,7 +157,7 @@ export function WorksSection() {
         {settings.works.map((w, i) => (
           <figure key={w.id} className="work">
             <button type="button" onClick={() => setOpen(i)} aria-label={`Открыть фото: ${w.caption || 'работа'}`}>
-              <img src={media(w.image)} alt={w.caption} loading="lazy" decoding="async" crossOrigin="anonymous" />
+              <Photo src={media(w.image)} fallback={media(w.fallback) || undefined} alt={w.caption} loading="lazy" decoding="async" />
             </button>
             {w.caption && <figcaption>{w.caption}</figcaption>}
           </figure>
@@ -165,7 +166,12 @@ export function WorksSection() {
       <Dialog isOpen={current !== null} onOpenChange={(o) => !o && setOpen(null)} width={980} padding={0}>
         {current && (
           <div style={{ position: 'relative' }}>
-            <img src={media(current.image)} alt={current.caption} style={{ width: '100%', maxHeight: '78svh', objectFit: 'contain', background: '#000' }} />
+            <Photo
+              src={media(current.image)}
+              fallback={media(current.fallback) || undefined}
+              alt={current.caption}
+              style={{ width: '100%', maxHeight: '78svh', objectFit: 'contain', background: '#000' }}
+            />
             {current.caption && <p style={{ margin: 0, padding: '14px 16px 18px' }}>{current.caption}</p>}
             <div style={{ position: 'absolute', top: 10, right: 10 }}>
               <IconButton label="Закрыть" icon={<X size={20} />} onClick={() => setOpen(null)} />

@@ -9,7 +9,7 @@ import sharp from 'sharp';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const [slug = 'motor-service', accent = '#ff1f2d', logoText = 'MOTOR'] = process.argv.slice(2);
+const [slug = 'motor-service', accent = '#d0584f', logoText = 'MOTOR'] = process.argv.slice(2);
 const dir = join('studios', slug);
 mkdirSync(dir, { recursive: true });
 

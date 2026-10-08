@@ -23,5 +23,5 @@ tpl.slug = slug;
 tpl.name = name;
 writeFileSync(`${dir}/studio.json`, JSON.stringify(tpl, null, 2) + '\n');
 const logo = name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 6).toUpperCase() || 'AUTO';
-execFileSync('node', ['scripts/generate-demo-images.mjs', slug, '#ff1f2d', logo], { stdio: 'inherit' });
+execFileSync('node', ['scripts/generate-demo-images.mjs', slug, '#d0584f', logo], { stdio: 'inherit' });
 console.log(`\n✓ ${dir}/studio.json создан. Заполните его и замените фото в ${dir}/`);

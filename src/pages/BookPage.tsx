@@ -277,7 +277,7 @@ export function BookPage() {
                       style={errors.customerPhone ? { borderColor: 'var(--red-bright)' } : undefined}
                     />
                     {errors.customerPhone && (
-                      <div id="err-phone" role="alert" style={{ color: '#ff8a8a', fontSize: 14, marginTop: 6 }}>
+                      <div id="err-phone" role="alert" style={{ color: '#f4a19a', fontSize: 14, marginTop: 6 }}>
                         {errors.customerPhone}
                       </div>
                     )}

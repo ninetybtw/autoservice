@@ -1,9 +1,9 @@
 import { defineTheme } from '@astryxdesign/core/theme';
 
-/** Тёмная тема: чёрный фон, белый текст, яркий красный акцент. */
+/** Тёмная тема: чёрный фон, белый текст, мягкий кирпично-красный акцент (белый текст на нём — контраст 4,76:1). */
 export const studioTheme = defineTheme({
   name: 'autoservice-noir',
-  color: { accent: '#e5121b', neutralStyle: 'neutral', contrast: 'high' },
+  color: { accent: '#c44a46', neutralStyle: 'neutral', contrast: 'high' },
   typography: {
     scale: { base: 16, ratio: 1.22 },
     body: { family: 'Manrope Variable', fallbacks: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif' },
@@ -11,10 +11,10 @@ export const studioTheme = defineTheme({
   },
   radius: { base: 10, multiplier: 1.3 },
   tokens: {
-    '--color-accent': '#e5121b',
+    '--color-accent': '#c44a46',
     '--color-on-accent': '#ffffff',
-    '--color-text-accent': '#ff5c5c',
-    '--color-icon-accent': '#ff4747',
+    '--color-text-accent': '#ef8a80',
+    '--color-icon-accent': '#ec7d75',
     '--color-background-body': '#000000',
     '--color-background-surface': '#0c0c0e',
     '--color-background-card': '#111114',

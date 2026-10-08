@@ -78,6 +78,9 @@
           "default": "",
           "type": "string"
         },
+        "heroFallback": {
+          "type": "string"
+        },
         "icon192": {
           "type": "string"
         },
@@ -196,6 +199,9 @@
           "image": {
             "type": "string",
             "minLength": 1
+          },
+          "fallback": {
+            "type": "string"
           },
           "caption": {
             "default": "",

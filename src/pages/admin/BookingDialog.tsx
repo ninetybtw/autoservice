@@ -191,7 +191,7 @@ function Payments({ booking }: { booking: Booking }) {
           <span className="grow">
             {formatWhen(p.createdAt, new Date(), studio.settings.timezone)} · {METHOD_LABELS[p.method]}
           </span>
-          <strong style={{ color: p.kind === 'refund' ? '#ff8a8a' : '#7ee08f' }}>
+          <strong style={{ color: p.kind === 'refund' ? '#f4a19a' : '#7ee08f' }}>
             {p.kind === 'refund' ? '−' : '+'}
             {formatPrice(p.amount)}
           </strong>

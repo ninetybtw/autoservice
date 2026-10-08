@@ -83,7 +83,7 @@ export function ReminderOffer({ booking, token, link }: { booking: PublicBooking
           Уведомления запрещены в настройках браузера. Добавьте запись в календарь:
         </p>
       )}
-      {error && <p style={{ color: '#ff8a8a', margin: 0 }}>{error}</p>}
+      {error && <p style={{ color: '#f4a19a', margin: 0 }}>{error}</p>}
       <div className="row">
         <Button
           label="В календарь (.ics)"

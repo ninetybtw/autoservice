@@ -17,6 +17,7 @@ import { useMedia, useStudio } from '../../studio.tsx';
 import { makeIcon, prepareImage, uniqueName } from '../../lib/images.ts';
 import { INFO_ICON_LABELS } from '../../components/icons.tsx';
 import { FileButton, SaveBar, SettingsSection, zodMessage } from './AdminCommon.tsx';
+import { Photo } from '../../components/Photo.tsx';
 
 /** Поля, которые редактируются на этой странице (услуги и фото работ — на своих страницах). */
 type Editable = Pick<StudioSettings, 'name' | 'tagline' | 'description' | 'contacts' | 'infoCards' | 'schedule' | 'booking'>;
@@ -84,7 +85,7 @@ export default function StudioSettingsPage() {
   const uploadBranding = async (kind: 'logo' | 'hero', file: File) => {
     if (kind === 'hero') {
       const url = await backend.uploadMedia(studio, await prepareImage(file, 2000), uniqueName('hero'));
-      await update.mutateAsync((c) => ({ ...c, branding: { ...c.branding, hero: url } }));
+      await update.mutateAsync((c) => ({ ...c, branding: { ...c.branding, hero: url, heroFallback: undefined } }));
     } else {
       const logo = await backend.uploadMedia(studio, await prepareImage(file, 600, 0.9), uniqueName('logo'));
       const icon192 = await backend.uploadMedia(studio, await makeIcon(file, 192), uniqueName('icon-192', 'png'));
@@ -110,7 +111,14 @@ export default function StudioSettingsPage() {
           {studio.settings.branding.logo && <img className="logo-preview" src={media(studio.settings.branding.logo)} alt="Логотип" />}
           <FileButton label="Загрузить логотип" onFile={(f) => uploadBranding('logo', f)} testId="logo-file" />
         </div>
-        {studio.settings.branding.hero && <img className="media-preview" src={media(studio.settings.branding.hero)} alt="Главное фото" />}
+        {studio.settings.branding.hero && (
+          <Photo
+            className="media-preview"
+            src={media(studio.settings.branding.hero)}
+            fallback={media(studio.settings.branding.heroFallback) || undefined}
+            alt="Главное фото"
+          />
+        )}
         <FileButton label="Заменить главное фото" onFile={(f) => uploadBranding('hero', f)} testId="hero-file" />
       </SettingsSection>
 
