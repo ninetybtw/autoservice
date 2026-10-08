@@ -11,6 +11,7 @@ import { z } from 'zod';
 const time = z
   .string()
   .regex(/^([01]\d|2[0-3]):[0-5]\d$|^24:00$/, 'Время в формате ЧЧ:ММ');
+const hexColor = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'Цвет в формате #RRGGBB');
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Дата в формате ГГГГ-ММ-ДД');
 
 export const dayHoursSchema = z
@@ -133,6 +134,15 @@ export const studioSettingsSchema = z.object({
     /** Квадратные иконки приложения (генерируются из логотипа). */
     icon192: z.string().optional(),
     icon512: z.string().optional(),
+    /** Фирменные цвета. Без них — стандартный мягкий красный. */
+    colors: z
+      .object({
+        /** Цвет кнопок, как на вывеске или сайте: #1f6fd1 */
+        accent: hexColor,
+        /** Необязательно: цвет акцентного текста на чёрном фоне (иначе рассчитывается) */
+        accentText: hexColor.optional(),
+      })
+      .optional(),
   }),
   infoCards: z.array(infoCardSchema).length(3, 'Нужно ровно три карточки'),
   services: z.array(serviceSchema).min(1, 'Добавьте хотя бы одну услугу'),
@@ -269,6 +279,11 @@ export type PaymentInput = z.input<typeof paymentInputSchema>;
 export function formatPrice(price: number, from = false): string {
   const s = new Intl.NumberFormat('ru-RU').format(price) + ' ₽';
   return from ? `от ${s}` : s;
+}
+
+/** Цена услуги для клиента: 0 ₽ без «от» показывается как «Бесплатно». */
+export function formatServicePrice(price: number, from = false): string {
+  return price === 0 && !from ? 'Бесплатно' : formatPrice(price, from);
 }
 
 export function formatDuration(minutes: number): string {

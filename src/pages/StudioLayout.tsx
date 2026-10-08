@@ -3,10 +3,12 @@ import { Outlet, useParams } from 'react-router';
 import { StudioContext } from '../studio.tsx';
 import { useStudioQuery } from '../data/hooks.ts';
 import { NotFound } from './NotFound.tsx';
+import { useBrandColors } from '../lib/useBrandColors.ts';
 
 export function StudioLayout() {
   const { slug = '' } = useParams();
   const { data: studio, isPending, isError, refetch } = useStudioQuery(slug);
+  useBrandColors(studio?.settings.branding.colors);
 
   useEffect(() => {
     if (studio) document.title = `${studio.settings.name} — запись онлайн`;

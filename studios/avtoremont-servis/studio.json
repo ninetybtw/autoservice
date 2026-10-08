@@ -1,0 +1,242 @@
+{
+  "$schema": "../studio.schema.json",
+  "slug": "avtoremont-servis",
+  "owner": {
+    "email": "owner@avtoremont-servis.ru"
+  },
+  "name": "АвтоРемонт-Сервис",
+  "tagline": "Кузовной ремонт автомобиля в Челябинске",
+  "description": "Качественный кузовной ремонт после ДТП дешевле, чем у дилера. Подбираем цвет в своей лаборатории, восстанавливаем геометрию на стапеле, даём гарантию на покраску 1 год. Оценка по фото — бесплатно.",
+  "timezone": "Asia/Yekaterinburg",
+  "contacts": {
+    "phone": "+7 950 725-48-18",
+    "address": "Челябинск, Копейское шоссе, 36а/1",
+    "howToFind": "Ленинский район, 1 этаж. Другие телефоны: +7 351 233-41-33, +7 963 472-16-89.",
+    "mapUrl": "https://yandex.ru/maps/org/avtoremont_servis/1696176003/"
+  },
+  "branding": {
+    "logo": "logo.png",
+    "hero": "hero.jpg",
+    "heroMobile": "hero-mobile.jpg",
+    "icon192": "icon-192.png",
+    "icon512": "icon-512.png",
+    "colors": {
+      "accent": "#f5d426"
+    }
+  },
+  "infoCards": [
+    {
+      "icon": "shield",
+      "title": "Гарантия 1 год",
+      "text": "Если покрытие подведёт не по вашей вине — исправим за свой счёт."
+    },
+    {
+      "icon": "drop",
+      "title": "Цвет в цвет",
+      "text": "Подбираем краску по прибору в собственной лаборатории."
+    },
+    {
+      "icon": "camera",
+      "title": "Оценка по фото",
+      "text": "Пришлите фото повреждений — посчитаем стоимость бесплатно."
+    }
+  ],
+  "services": [
+    {
+      "id": "estimate",
+      "name": "Осмотр и оценка ремонта",
+      "description": "Посмотрим повреждения, назовём цену и сроки. Можно прислать фото заранее.",
+      "price": 0,
+      "priceFrom": false,
+      "durationMinutes": 30,
+      "keywords": [
+        "оценка",
+        "осмотр",
+        "посчитать",
+        "сколько будет стоить",
+        "фото"
+      ],
+      "active": true
+    },
+    {
+      "id": "bumper-paint",
+      "name": "Окраска бампера",
+      "description": "Подготовка и покраска бампера, средний класс. Большой класс — от 12 000 ₽.",
+      "price": 10000,
+      "priceFrom": true,
+      "durationMinutes": 1080,
+      "keywords": [
+        "бампер",
+        "покраска бампера"
+      ],
+      "active": true
+    },
+    {
+      "id": "panel-paint",
+      "name": "Окраска элемента: дверь, крыло",
+      "description": "Один боковой элемент, средний класс. Большой класс — от 12 000 ₽.",
+      "price": 10000,
+      "priceFrom": true,
+      "durationMinutes": 1080,
+      "keywords": [
+        "дверь",
+        "крыло",
+        "элемент",
+        "покраска",
+        "покрасить"
+      ],
+      "active": true
+    },
+    {
+      "id": "hood-paint",
+      "name": "Окраска капота",
+      "description": "Средний класс. Большой класс — от 19 000 ₽.",
+      "price": 17000,
+      "priceFrom": true,
+      "durationMinutes": 1620,
+      "keywords": [
+        "капот"
+      ],
+      "active": true
+    },
+    {
+      "id": "roof-paint",
+      "name": "Окраска крыши",
+      "description": "Средний класс. Большой класс — от 17 000 ₽.",
+      "price": 15000,
+      "priceFrom": true,
+      "durationMinutes": 1620,
+      "keywords": [
+        "крыша"
+      ],
+      "active": true
+    },
+    {
+      "id": "sill-replace",
+      "name": "Замена порога",
+      "description": "Средний класс. Большой класс — от 7 000 ₽.",
+      "price": 6000,
+      "priceFrom": true,
+      "durationMinutes": 1080,
+      "keywords": [
+        "порог",
+        "пороги",
+        "сварка"
+      ],
+      "active": true
+    },
+    {
+      "id": "headlight-polish",
+      "name": "Полировка фары",
+      "description": "Цена за одну фару.",
+      "price": 1000,
+      "priceFrom": true,
+      "durationMinutes": 60,
+      "keywords": [
+        "фара",
+        "фары",
+        "полировка фар"
+      ],
+      "active": true
+    },
+    {
+      "id": "full-polish",
+      "name": "Полная полировка кузова",
+      "description": "Глубокая полировка всего автомобиля.",
+      "price": 25000,
+      "priceFrom": true,
+      "durationMinutes": 540,
+      "keywords": [
+        "полировка",
+        "блеск",
+        "царапины"
+      ],
+      "active": true
+    },
+    {
+      "id": "full-paint",
+      "name": "Полная покраска автомобиля",
+      "description": "Средний класс. Большой класс — от 400 000 ₽.",
+      "price": 350000,
+      "priceFrom": true,
+      "durationMinutes": 5400,
+      "keywords": [
+        "полная покраска",
+        "перекрасить"
+      ],
+      "active": true
+    }
+  ],
+  "works": [
+    {
+      "id": "w1",
+      "image": "",
+      "caption": "Ford Focus 2: капот, крыло, бампер и пороги — 34 500 ₽"
+    },
+    {
+      "id": "w2",
+      "image": "",
+      "caption": "Ford Focus 3: заднее крыло после ДТП без замены — 15 000 ₽, 5 дней"
+    },
+    {
+      "id": "w3",
+      "image": "",
+      "caption": "Mazda 6 GH: ремонт и окраска двери — 8 000 ₽"
+    },
+    {
+      "id": "w4",
+      "image": "",
+      "caption": "LADA Granta: крылья, багажник, бампер, геометрия — 52 000 ₽, 12 дней"
+    }
+  ],
+  "schedule": {
+    "weekly": {
+      "mon": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "tue": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "wed": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "thu": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "fri": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "sat": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "sun": null
+    },
+    "exceptions": [
+      {
+        "date": "2026-11-04",
+        "hours": null,
+        "note": "День народного единства"
+      },
+      {
+        "date": "2027-01-01",
+        "hours": null,
+        "note": "Новый год"
+      }
+    ]
+  },
+  "booking": {
+    "bays": 2,
+    "slotStepMinutes": 30,
+    "bufferMinutes": 30,
+    "minLeadMinutes": 120,
+    "horizonDays": 30,
+    "cancelMinHoursBefore": 24,
+    "cancellationPolicy": "Если планы поменялись позже — позвоните, перенесём запись."
+  }
+}

@@ -4,7 +4,7 @@
  * и запасной (без модели) помощник — поэтому ответы всегда опираются на данные студии.
  */
 import type { Booking, BusyInterval, Payment, Service, StudioSettings } from '../schema.ts';
-import { BOOKING_STATUS_LABELS, WEEKDAYS, formatDuration, formatPrice } from '../schema.ts';
+import { BOOKING_STATUS_LABELS, WEEKDAYS, formatDuration, formatServicePrice } from '../schema.ts';
 import { addDaysToDate, localDateOf, nearestFreeSlots, slotsForDate, zonedToInstant } from '../slots.ts';
 import { formatDateLong, formatTime, formatWhen } from '../format.ts';
 import { periodStats, bookingPaid } from '../stats.ts';
@@ -132,7 +132,7 @@ export function toolGetServices(ctx: AssistantContext) {
   return activeServices(ctx.settings).map((s) => ({
     id: s.id,
     name: s.name,
-    price: formatPrice(s.price, s.priceFrom),
+    price: formatServicePrice(s.price, s.priceFrom),
     duration: formatDuration(s.durationMinutes),
     description: s.description,
   }));

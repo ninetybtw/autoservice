@@ -5,7 +5,7 @@ import { Button } from '@astryxdesign/core/Button';
 import { AlertDialog } from '@astryxdesign/core/AlertDialog';
 import { Banner } from '@astryxdesign/core/Banner';
 import { Spinner } from '@astryxdesign/core/Spinner';
-import { BOOKING_STATUS_LABELS, formatPhone, formatPrice } from '@shared/schema.ts';
+import { BOOKING_STATUS_LABELS, formatPhone, formatServicePrice } from '@shared/schema.ts';
 import { formatDateLong, formatWhen } from '@shared/format.ts';
 import { localDateOf } from '@shared/slots.ts';
 import { canClientCancel, cancellationText } from '@shared/policy.ts';
@@ -121,7 +121,7 @@ export function BookingPage() {
           </div>
           <div className="summary-row">
             <CurrencyRub size={20} weight="fill" aria-hidden />
-            <div>{formatPrice(booking.price, settings.services.find((s) => s.id === booking.serviceId)?.priceFrom)}</div>
+            <div>{formatServicePrice(booking.price, settings.services.find((s) => s.id === booking.serviceId)?.priceFrom)}</div>
           </div>
           {booking.comment && (
             <div className="summary-row">

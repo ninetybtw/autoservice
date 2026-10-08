@@ -114,8 +114,13 @@ test.describe('запись клиента', () => {
 test.describe('помощник', () => {
   test('примеры вопросов — кнопки, ответы по данным студии и уточняющий вопрос', async ({ page }) => {
     await page.goto(`/${SLUG}`);
-    await page.locator('#assistant').getByRole('button', { name: 'Сколько стоит замена масла?' }).click();
+    // Пример берётся из услуг этого сервиса
+    await page.locator('#assistant').getByRole('button', { name: 'Сколько стоит компьютерная диагностика?' }).click();
     const dialog = page.getByRole('dialog');
+    await expect(dialog.getByTestId('assistant-reply').last()).toContainText(/1\s500\s₽/);
+
+    await dialog.getByLabel('Сообщение помощнику').fill('Сколько стоит замена масла?');
+    await dialog.getByRole('button', { name: 'Отправить' }).click();
     await expect(dialog.getByTestId('assistant-reply').last()).toContainText('Уточните');
     await dialog.getByRole('button', { name: /Замена масла в АКПП/ }).click();
     await expect(dialog.getByTestId('assistant-reply').last()).toContainText(/3\s500\s₽/);

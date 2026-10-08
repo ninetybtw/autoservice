@@ -18,6 +18,7 @@ import { makeIcon, prepareImage, uniqueName } from '../../lib/images.ts';
 import { INFO_ICON_LABELS } from '../../components/icons.tsx';
 import { FileButton, SaveBar, SettingsSection, zodMessage } from './AdminCommon.tsx';
 import { Photo } from '../../components/Photo.tsx';
+import { BrandColorPicker } from './BrandColorPicker.tsx';
 
 /** Поля, которые редактируются на этой странице (услуги и фото работ — на своих страницах). */
 type Editable = Pick<StudioSettings, 'name' | 'tagline' | 'description' | 'contacts' | 'infoCards' | 'schedule' | 'booking'>;
@@ -130,6 +131,10 @@ export default function StudioSettingsPage() {
         <p className="muted" style={{ margin: 0, fontSize: 14 }}>
           Вертикальное фото показывается на телефонах. Если его нет — используется горизонтальное.
         </p>
+      </SettingsSection>
+
+      <SettingsSection title="Фирменный цвет" description="Цвет кнопок и выделений — как на вывеске или сайте. Применяется сразу после сохранения.">
+        <BrandColorPicker />
       </SettingsSection>
 
       <SettingsSection title="Контакты" description="Адрес, телефон и подсказка, как найти сервис.">

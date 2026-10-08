@@ -2,7 +2,7 @@
  * Помощник без языковой модели. Работает, когда на сервере не задан OPENAI_API_KEY,
  * и в демо-режиме. Понимает типичные вопросы и задаёт уточняющие, если данных не хватает.
  */
-import { formatDuration, formatPrice, type Service } from '../schema.ts';
+import { formatDuration, formatPrice, formatServicePrice, type Service, type StudioSettings } from '../schema.ts';
 import { formatDateLong, formatWhen, plural } from '../format.ts';
 import { addDaysToDate, localDateOf, nearestFreeSlots, slotsForDate, zonedToInstant } from '../slots.ts';
 import { periodStats } from '../stats.ts';
@@ -34,7 +34,7 @@ function clientIntents(text: string): Set<ClientIntent> {
 }
 
 function serviceLine(s: Service): string {
-  return `${s.name} — ${formatPrice(s.price, s.priceFrom)}, ${formatDuration(s.durationMinutes)}`;
+  return `${s.name} — ${formatServicePrice(s.price, s.priceFrom)}, ${formatDuration(s.durationMinutes)}`;
 }
 
 function nearestText(ctx: AssistantContext, service: Service, periodDate?: string): string {
@@ -57,6 +57,14 @@ function nearestText(ctx: AssistantContext, service: Service, periodDate?: strin
 
 function lastUserMessages(messages: ChatMessage[]): string[] {
   return messages.filter((m) => m.role === 'user').map((m) => m.content);
+}
+
+/** Примеры вопросов для клиента — по услугам этого сервиса. */
+export function clientExamples(settings: Pick<StudioSettings, 'services'>): string[] {
+  const active = settings.services.filter((s) => s.active);
+  const paid = active.find((s) => s.price > 0) ?? active[0];
+  const name = paid ? paid.name.charAt(0).toLowerCase() + paid.name.slice(1) : '';
+  return ['Когда ближайшее окно?', ...(name ? [`Сколько стоит ${name}?`] : []), 'Как вас найти?'];
 }
 
 export function clientFallback(messages: ChatMessage[], ctx: AssistantContext): AssistantReply {
@@ -92,7 +100,7 @@ export function clientFallback(messages: ChatMessage[], ctx: AssistantContext): 
   if (intents.has('greeting') && intents.size === 1) {
     return {
       text: `Здравствуйте! Я помощник автосервиса «${ctx.settings.name}». Подскажу цены, свободное время и как нас найти.`,
-      suggestions: ['Когда ближайшее окно?', 'Сколько стоит замена масла?', 'Как вас найти?'],
+      suggestions: clientExamples(ctx.settings),
     };
   }
 
@@ -134,7 +142,7 @@ export function clientFallback(messages: ChatMessage[], ctx: AssistantContext): 
   if (parts.length === 0) {
     return {
       text: 'Я могу подсказать цены, ближайшее свободное время и как нас найти. Что вас интересует?',
-      suggestions: ['Когда ближайшее окно?', 'Сколько стоит замена масла?', 'Как вас найти?'],
+      suggestions: clientExamples(ctx.settings),
     };
   }
   return { text: parts.join('\n\n'), suggestions };

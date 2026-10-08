@@ -15,6 +15,7 @@ import {
   customerSchema,
   formatPhone,
   formatPrice,
+  formatServicePrice,
   type Booking,
   type BookingStatus,
   type Payment,
@@ -274,7 +275,7 @@ function BookingForm({ booking, initialDate, onDone }: { booking?: Booking; init
           setServiceId(v);
           setTime(null);
         }}
-        options={services.map((s) => ({ value: s.id, label: `${s.name} — ${formatPrice(s.price, s.priceFrom)}` }))}
+        options={services.map((s) => ({ value: s.id, label: `${s.name} — ${formatServicePrice(s.price, s.priceFrom)}` }))}
       />
       <div>
         <label className="field-label" htmlFor="owner-date">

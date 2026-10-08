@@ -5,7 +5,7 @@ import { Button } from '@astryxdesign/core/Button';
 import { TextInput } from '@astryxdesign/core/TextInput';
 import { TextArea } from '@astryxdesign/core/TextArea';
 import { Banner } from '@astryxdesign/core/Banner';
-import { customerSchema, formatPrice, type Service } from '@shared/schema.ts';
+import { customerSchema, formatServicePrice, type Service } from '@shared/schema.ts';
 import { bookingDates, dayAvailability, localDateOf, slotsForDate } from '@shared/slots.ts';
 import { formatDateLong, formatDayNumber, formatWeekdayShort, formatWhen, plural } from '@shared/format.ts';
 import { useBusy, useCreateBooking } from '../data/hooks.ts';
@@ -151,7 +151,7 @@ export function BookPage() {
                 </span>
               </span>
               <span className="price" style={{ fontSize: 17 }}>
-                {formatPrice(s.price, s.priceFrom)}
+                {formatServicePrice(s.price, s.priceFrom)}
               </span>
             </button>
           ))}
@@ -303,7 +303,7 @@ export function BookPage() {
                     <Wrench size={20} weight="fill" aria-hidden />
                     <div>
                       <strong>{service.name}</strong>
-                      <small>{formatPrice(service.price, service.priceFrom)}</small>
+                      <small>{formatServicePrice(service.price, service.priceFrom)}</small>
                     </div>
                   </div>
                   <div className="summary-row">

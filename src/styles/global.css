@@ -3,7 +3,15 @@
 :root {
   --red: #c44a46;
   --red-bright: #ef8a80;
-  --red-soft: rgba(196, 74, 70, 0.16);
+  --accent-rgb: 196, 74, 70;
+  --accent-light-rgb: 232, 120, 112;
+  --red-soft: rgba(var(--accent-rgb), 0.16);
+  --on-red: #ffffff;
+  /* Стеклянная кнопка: у светлых фирменных цветов заливка плотнее, а надпись тёмная */
+  --cta-fill-top: 0.34;
+  --cta-fill-bottom: 0.5;
+  --cta-label: #ffffff;
+  --cta-label-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   --bg: #000;
   --surface: #0c0c0e;
   --card: #111114;
@@ -386,18 +394,26 @@ a {
 }
 
 .glass-button .glass-layer.tinted {
-  background: rgba(196, 74, 70, 0.32);
+  background: rgba(var(--accent-rgb), 0.32);
 }
 
-/* Красное стекло: полупрозрачная заливка над преломлением, под надписью */
+.glass-button.cta {
+  color: var(--cta-label);
+}
+
+.glass-button.cta .glass-label {
+  text-shadow: var(--cta-label-shadow);
+}
+
+/* Цветное стекло: полупрозрачная заливка над преломлением, под надписью */
 .glass-button.cta::before {
   content: '';
   position: absolute;
   z-index: 2;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(180deg, rgba(232, 120, 112, 0.34) 0%, rgba(196, 74, 70, 0.5) 100%);
-  box-shadow: 0 10px 34px rgba(196, 74, 70, 0.35);
+  background: linear-gradient(180deg, rgba(var(--accent-light-rgb), var(--cta-fill-top)) 0%, rgba(var(--accent-rgb), var(--cta-fill-bottom)) 100%);
+  box-shadow: 0 10px 34px rgba(var(--accent-rgb), 0.35);
   pointer-events: none;
 }
 
@@ -465,7 +481,7 @@ a {
 }
 
 .bottom-nav a.active {
-  color: #fff;
+  color: var(--on-red);
   text-shadow: none;
 }
 
@@ -483,8 +499,8 @@ a {
   left: 6px;
   width: calc((100% - 12px - 8px) / 3);
   border-radius: 18px;
-  background: linear-gradient(180deg, #cd524d 0%, #b8413d 100%);
-  box-shadow: 0 6px 18px rgba(196, 74, 70, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  background: linear-gradient(180deg, rgba(var(--accent-light-rgb), 0.55) 0%, transparent 100%), var(--red);
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transform: translateX(calc(var(--active, 0) * (100% + 4px)));
   transition:
     transform var(--dur-nav) var(--ease-move),
@@ -516,7 +532,7 @@ a {
 }
 
 .bottom-nav a.active .nav-dot {
-  background: #fff;
+  background: var(--on-red);
 }
 
 /* ------------------------------------------------------------------ */
@@ -659,9 +675,9 @@ a {
 }
 
 .card-accent {
-  border-color: rgba(196, 74, 70, 0.55);
+  border-color: rgba(var(--accent-rgb), 0.55);
   background:
-    radial-gradient(120% 140% at 100% 0%, rgba(196, 74, 70, 0.18), rgba(196, 74, 70, 0) 55%),
+    radial-gradient(120% 140% at 100% 0%, rgba(var(--accent-rgb), 0.18), rgba(var(--accent-rgb), 0) 55%),
     var(--card);
 }
 
@@ -798,7 +814,7 @@ a {
   box-sizing: border-box;
   border-radius: inherit;
   background:
-    radial-gradient(120% 90% at 50% 0%, rgba(196, 74, 70, 0.12), rgba(196, 74, 70, 0) 60%),
+    radial-gradient(120% 90% at 50% 0%, rgba(var(--accent-rgb), 0.12), rgba(var(--accent-rgb), 0) 60%),
     repeating-linear-gradient(135deg, #121215 0 10px, #0e0e11 10px 20px);
   color: var(--muted);
   font-size: 16px;
@@ -1051,11 +1067,12 @@ a {
 .day[aria-pressed='true'] {
   background: var(--red);
   border-color: var(--red);
+  color: var(--on-red);
 }
 
 .day[aria-pressed='true'] .wd,
 .day[aria-pressed='true'] .st {
-  color: #fff;
+  color: var(--on-red);
 }
 
 .day:disabled {
@@ -1130,6 +1147,7 @@ a {
 .slot[aria-pressed='true'] {
   background: var(--red);
   border-color: var(--red);
+  color: var(--on-red);
 }
 
 .slot.busy {
@@ -1189,6 +1207,7 @@ a {
   height: 30px;
   border-radius: 50%;
   background: var(--red);
+  color: var(--on-red);
   font-size: 15px;
   flex: none;
 }
@@ -1230,6 +1249,7 @@ a {
 .bubble.user {
   align-self: flex-end;
   background: var(--red);
+  color: var(--on-red);
   border-bottom-right-radius: 6px;
 }
 
@@ -1320,7 +1340,7 @@ a {
 
 .status.cancelled,
 .status.no_show {
-  background: rgba(196, 74, 70, 0.14);
+  background: rgba(var(--accent-rgb), 0.14);
   color: #f4a19a;
 }
 
@@ -1536,6 +1556,60 @@ a {
   background: #0a0a0a;
 }
 
+.brand-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-swatch {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  padding: 0;
+  transition: transform var(--dur-press) var(--ease-standard), border-color var(--dur-state) var(--ease-standard);
+}
+
+.brand-swatch[aria-checked='true'] {
+  border-color: #fff;
+  box-shadow: 0 0 0 3px #000 inset;
+}
+
+.brand-swatch:active {
+  transform: scale(0.94);
+}
+
+.brand-swatch-custom {
+  overflow: hidden;
+  background: conic-gradient(#e5484d, #f2b705, #2e9d57, #1f6fd1, #7a4fd6, #e5484d);
+}
+
+.brand-swatch-custom input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.brand-swatch-custom:focus-within {
+  outline: 2px solid var(--red-bright);
+  outline-offset: 2px;
+}
+
+.brand-sample {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
 .logo-preview {
   width: 96px;
   height: 96px;
@@ -1741,6 +1815,6 @@ a {
   gap: 10px;
   padding: 14px;
   border-radius: 14px;
-  background: rgba(196, 74, 70, 0.1);
-  border: 1px solid rgba(196, 74, 70, 0.45);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
 }

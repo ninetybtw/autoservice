@@ -4,7 +4,7 @@ import { ChatCircleDots, Clock, MapPin, NavigationArrow, Phone, CalendarPlus, X 
 import { Button } from '@astryxdesign/core/Button';
 import { Dialog } from '@astryxdesign/core/Dialog';
 import { IconButton } from '@astryxdesign/core/IconButton';
-import { WEEKDAYS, WEEKDAY_LABELS, formatPrice } from '@shared/schema.ts';
+import { WEEKDAYS, WEEKDAY_LABELS, formatServicePrice } from '@shared/schema.ts';
 import { localDateOf, nearestFreeSlots, weekdayOf } from '@shared/slots.ts';
 import { formatDateLong, formatTime, formatWhen } from '@shared/format.ts';
 import { useBusy } from '../data/hooks.ts';
@@ -13,7 +13,7 @@ import { Reveal } from './Reveal.tsx';
 import { INFO_ICON } from './icons.tsx';
 import { ServiceRow } from './ServiceRow.tsx';
 import { Photo, PhotoPlaceholder } from './Photo.tsx';
-import { CLIENT_EXAMPLES } from './AssistantDialog.tsx';
+import { clientExamples } from '@shared/assistant/fallback.ts';
 
 /** Карточка «Запись» на главной: услуга → ближайшее время → переход к выбору даты. */
 export function BookingSection() {
@@ -51,7 +51,7 @@ export function BookingSection() {
         </div>
         {service && (
           <div className="meta-row" style={{ marginTop: 0 }}>
-            <span style={{ color: '#fff', fontWeight: 800, fontSize: 18 }}>{formatPrice(service.price, service.priceFrom)}</span>
+            <span style={{ color: '#fff', fontWeight: 800, fontSize: 18 }}>{formatServicePrice(service.price, service.priceFrom)}</span>
           </div>
         )}
         <div>
@@ -189,6 +189,7 @@ export function WorksSection() {
 }
 
 export function AssistantSection({ onAsk }: { onAsk: (q: string | null) => void }) {
+  const { settings } = useStudio();
   return (
     <Reveal as="section" className="section" id="assistant">
       <div className="card stack">
@@ -202,7 +203,7 @@ export function AssistantSection({ onAsk }: { onAsk: (q: string | null) => void 
           </div>
         </div>
         <div className="chips">
-          {CLIENT_EXAMPLES.map((q) => (
+          {clientExamples(settings).map((q) => (
             <button key={q} type="button" className="chip" onClick={() => onAsk(q)}>
               {q}
             </button>
